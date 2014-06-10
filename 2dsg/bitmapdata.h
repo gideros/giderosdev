@@ -4,20 +4,20 @@
 #include "refptr.h"
 #include "texturebase.h"
 
-class BitmapData : public GReferenced
+class GTextureRegion : public GReferenced
 {
 public:
-	BitmapData(TextureBase* texture);
-	BitmapData(TextureBase* texture, int x, int y, int width, int height, int dx1 = 0, int dy1 = 0, int dx2 = 0, int dy2 = 0);
+    GTextureRegion(TextureBase* texture);
+    GTextureRegion(TextureBase* texture, int x, int y, int width, int height, int dx1 = 0, int dy1 = 0, int dx2 = 0, int dy2 = 0);
 
-	virtual ~BitmapData();
+    virtual ~GTextureRegion();
 
 	TextureBase* texture() const
 	{
 		return texture_;
 	}
 
-	BitmapData* clone();
+    GTextureRegion* clone();
 
     void setRegion(int x, int y, int width, int height, int dx1, int dy1, int dx2, int dy2);
     void getRegion(int *x, int *y, int *width, int *height, int *dx1, int *dy1, int *dx2, int *dy2);
@@ -38,7 +38,7 @@ private:
 };
 
 
-typedef BitmapData TextureRegion;
+typedef GTextureRegion TextureRegion;
 
 
 #endif

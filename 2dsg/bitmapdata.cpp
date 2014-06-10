@@ -1,7 +1,7 @@
 #include "bitmapdata.h"
 #include <math.h>
 
-BitmapData::BitmapData(TextureBase* texture)
+GTextureRegion::GTextureRegion(TextureBase* texture)
 {
 	//printf("TextureRegion()\n");
 	texture_ = texture;
@@ -19,7 +19,7 @@ BitmapData::BitmapData(TextureBase* texture)
 	initUV();
 }
 
-BitmapData::BitmapData(TextureBase* texture, int x, int y, int width, int height, int dx1/* = 0*/, int dy1/* = 0*/, int dx2/* = 0*/, int dy2/* = 0*/) :
+GTextureRegion::GTextureRegion(TextureBase* texture, int x, int y, int width, int height, int dx1/* = 0*/, int dy1/* = 0*/, int dx2/* = 0*/, int dy2/* = 0*/) :
 	x(x), y(y),
 	width(width), height(height),
 	dx1(dx1), dy1(dy1),
@@ -32,13 +32,13 @@ BitmapData::BitmapData(TextureBase* texture, int x, int y, int width, int height
 	initUV();
 }
 
-BitmapData::~BitmapData()
+GTextureRegion::~GTextureRegion()
 {
 	//printf("~TextureRegion()\n");
 	texture_->unref();
 }
 
-void BitmapData::initUV()
+void GTextureRegion::initUV()
 {
 	u0 = (float)x / (float)texture_->data->exwidth;
 	v0 = (float)y / (float)texture_->data->exheight;
@@ -57,12 +57,12 @@ void BitmapData::initUV()
 	}
 }
 
-BitmapData* BitmapData::clone()
+GTextureRegion* GTextureRegion::clone()
 {
-	return new BitmapData(texture_, x, y, width, height, dx1, dy1, dx2, dy2);
+	return new GTextureRegion(texture_, x, y, width, height, dx1, dy1, dx2, dy2);
 }
 
-void BitmapData::setRegion(int x, int y, int width, int height, int dx1, int dy1, int dx2, int dy2)
+void GTextureRegion::setRegion(int x, int y, int width, int height, int dx1, int dy1, int dx2, int dy2)
 {
     this->x = x;
     this->y = y;
@@ -76,7 +76,7 @@ void BitmapData::setRegion(int x, int y, int width, int height, int dx1, int dy1
     initUV();
 }
 
-void BitmapData::getRegion(int *x, int *y, int *width, int *height, int *dx1, int *dy1, int *dx2, int *dy2)
+void GTextureRegion::getRegion(int *x, int *y, int *width, int *height, int *dx1, int *dy1, int *dx2, int *dy2)
 {
     if (x)
         *x = this->x;

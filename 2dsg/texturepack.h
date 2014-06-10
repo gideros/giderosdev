@@ -5,7 +5,7 @@
 #include <map>
 #include <string>
 
-class BitmapData;
+class GTextureRegion;
 
 class TexturePack : public TextureBase
 {

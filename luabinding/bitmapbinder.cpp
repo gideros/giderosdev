@@ -37,7 +37,7 @@ int BitmapBinder::create(lua_State* L)
 	}
 	else if (binder.isInstanceOf("TextureRegion", 1))
 	{
-		BitmapData* bitmapData = static_cast<BitmapData*>(binder.getInstance("TextureRegion", 1));
+		GTextureRegion* bitmapData = static_cast<GTextureRegion*>(binder.getInstance("TextureRegion", 1));
 
         Bitmap* bitmap = new Bitmap(application->getApplication(), bitmapData);
 		binder.pushInstance("Bitmap", bitmap);
@@ -116,7 +116,7 @@ int BitmapBinder::setTextureRegion(lua_State *L)
     Binder binder(L);
 
     Bitmap *bitmap = static_cast<Bitmap*>(binder.getInstance("Bitmap", 1));
-    BitmapData *bitmapData = static_cast<BitmapData*>(binder.getInstance("TextureRegion", 2));
+    GTextureRegion *bitmapData = static_cast<GTextureRegion*>(binder.getInstance("TextureRegion", 2));
     bitmap->setTextureRegion(bitmapData);
 
     return 0;

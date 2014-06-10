@@ -24,7 +24,7 @@ int BitmapDataBinder::create(lua_State* L)
 
 	TextureBase* textureBase = static_cast<TextureBase*>(binder.getInstance("TextureBase", 1));
 
-	BitmapData* bitmapData = 0;
+	GTextureRegion* bitmapData = 0;
 	if (lua_gettop(L) > 1)
 	{
 		int x = luaL_checkinteger(L, 2);
@@ -36,10 +36,10 @@ int BitmapDataBinder::create(lua_State* L)
 		int dx2 = luaL_optint(L, 8, 0);
 		int dy2 = luaL_optint(L, 9, 0);
 
-		bitmapData = new BitmapData(textureBase, x, y, width, height, dx1, dy1, dx2, dy2);
+		bitmapData = new GTextureRegion(textureBase, x, y, width, height, dx1, dy1, dx2, dy2);
 	}
 	else
-		bitmapData = new BitmapData(textureBase);
+		bitmapData = new GTextureRegion(textureBase);
 	
 	binder.pushInstance("TextureRegion", bitmapData);
 
@@ -49,7 +49,7 @@ int BitmapDataBinder::create(lua_State* L)
 int BitmapDataBinder::destruct(lua_State* L)
 {
 	void* ptr = *(void**)lua_touserdata(L, 1);
-	BitmapData* bitmapData = static_cast<BitmapData*>(ptr);
+	GTextureRegion* bitmapData = static_cast<GTextureRegion*>(ptr);
 	bitmapData->unref();
 
 	return 0;
@@ -59,7 +59,7 @@ int BitmapDataBinder::setRegion(lua_State *L)
 {
     Binder binder(L);
 
-    BitmapData* bitmapData = static_cast<BitmapData*>(binder.getInstance("TextureRegion", 1));
+    GTextureRegion* bitmapData = static_cast<GTextureRegion*>(binder.getInstance("TextureRegion", 1));
 
     int x = luaL_checkinteger(L, 2);
     int y = luaL_checkinteger(L, 3);
@@ -79,7 +79,7 @@ int BitmapDataBinder::getRegion(lua_State *L)
 {
     Binder binder(L);
 
-    BitmapData* bitmapData = static_cast<BitmapData*>(binder.getInstance("TextureRegion", 1));
+    GTextureRegion* bitmapData = static_cast<GTextureRegion*>(binder.getInstance("TextureRegion", 1));
 
     int x, y, width, height, dx1, dy1, dx2, dy2;
     bitmapData->getRegion(&x, &y, &width, &height, &dx1, &dy1, &dx2, &dy2);

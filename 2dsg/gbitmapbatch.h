@@ -4,17 +4,17 @@
 #include "sprite.h"
 
 class Application;
-class BitmapData;
+class GTextureRegion;
 class TextureBase;
 
 class GBitmapArray : public GSprite
 {
 public:
-    GBitmapArray(Application *application, BitmapData *bitmapdata);
+    GBitmapArray(Application *application, GTextureRegion *bitmapdata);
     GBitmapArray(Application *application, TextureBase *texturebase);
     virtual ~GBitmapArray();
 
-    void setTextureRegion(BitmapData *bitmapdata);
+    void setTextureRegion(GTextureRegion *bitmapdata);
     void setTexture(TextureBase *texturebase);
 
     void setAnchorPoint(float x, float y);
@@ -44,7 +44,7 @@ private:
     virtual void extraBounds(float* minx, float* miny, float* maxx, float* maxy) const;
 
 private:
-    BitmapData  *bitmapdata_;
+    GTextureRegion  *bitmapdata_;
     TextureBase *texturebase_;
 
     float anchorx_, anchory_;

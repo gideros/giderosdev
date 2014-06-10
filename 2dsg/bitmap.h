@@ -8,7 +8,7 @@
 class Bitmap : public GSprite
 {
 public:
-    Bitmap(Application *application, BitmapData* bitmapdata) : GSprite(application)
+    Bitmap(Application *application, GTextureRegion* bitmapdata) : GSprite(application)
 	{
 		//printf("Bitmap()\n");
 		bitmapdata_ = bitmapdata;
@@ -54,7 +54,7 @@ public:
 	void setAnchorPoint(float x, float y);
 	void getAnchorPoint(float* x, float* y) const;
 
-    void setTextureRegion(BitmapData *bitmapdata);
+    void setTextureRegion(GTextureRegion *bitmapdata);
     void setTexture(TextureBase *texturebase);
 
 private:
@@ -63,7 +63,7 @@ private:
 private:
 	virtual void extraBounds(float* minx, float* miny, float* maxx, float* maxy) const;
 
-	BitmapData* bitmapdata_;
+	GTextureRegion* bitmapdata_;
 	TextureBase* texturebase_;
 
 	void setCoords();

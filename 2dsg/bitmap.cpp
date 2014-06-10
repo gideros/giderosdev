@@ -145,9 +145,9 @@ void Bitmap::getAnchorPoint(float* x, float* y) const
 		*y = anchory_;
 }
 
-void Bitmap::setTextureRegion(BitmapData *bitmapdata)
+void Bitmap::setTextureRegion(GTextureRegion *bitmapdata)
 {
-    BitmapData *originalbitmapdata = bitmapdata_;
+    GTextureRegion *originalbitmapdata = bitmapdata_;
     TextureBase *originaltexturebase = texturebase_;
 
     bitmapdata_ = bitmapdata;
@@ -164,7 +164,7 @@ void Bitmap::setTextureRegion(BitmapData *bitmapdata)
 
 void Bitmap::setTexture(TextureBase *texturebase)
 {
-    BitmapData *originalbitmapdata = bitmapdata_;
+    GTextureRegion *originalbitmapdata = bitmapdata_;
     TextureBase *originaltexturebase = texturebase_;
 
     bitmapdata_ = NULL;
