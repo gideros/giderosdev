@@ -32,14 +32,14 @@ int BitmapBinder::create(lua_State* L)
 	{
 		TextureBase* textureBase = static_cast<TextureBase*>(binder.getInstance("TextureBase", 1));
 
-        Bitmap* bitmap = new Bitmap(application->getApplication(), textureBase);
+        GBitmap* bitmap = new GBitmap(application->getApplication(), textureBase);
 		binder.pushInstance("Bitmap", bitmap);
 	}
 	else if (binder.isInstanceOf("TextureRegion", 1))
 	{
 		GTextureRegion* bitmapData = static_cast<GTextureRegion*>(binder.getInstance("TextureRegion", 1));
 
-        Bitmap* bitmap = new Bitmap(application->getApplication(), bitmapData);
+        GBitmap* bitmap = new GBitmap(application->getApplication(), bitmapData);
 		binder.pushInstance("Bitmap", bitmap);
 	}
 	else
@@ -61,7 +61,7 @@ int BitmapBinder::create(lua_State* L)
 int BitmapBinder::destruct(lua_State* L)
 {
 	void* ptr = *(void**)lua_touserdata(L, 1);
-	Bitmap* bitmap = static_cast<Bitmap*>(ptr);
+	GBitmap* bitmap = static_cast<GBitmap*>(ptr);
 	bitmap->unref();
 
 	return 0;
@@ -73,7 +73,7 @@ int BitmapBinder::setAnchorPoint(lua_State* L)
 
 	Binder binder(L);
 
-	Bitmap* bitmap = static_cast<Bitmap*>(binder.getInstance("Bitmap", 1));
+	GBitmap* bitmap = static_cast<GBitmap*>(binder.getInstance("Bitmap", 1));
 
 	lua_Number x = luaL_checknumber(L, 2);
 	lua_Number y = luaL_checknumber(L, 3);
@@ -89,7 +89,7 @@ int BitmapBinder::getAnchorPoint(lua_State* L)
 
 	Binder binder(L);
 
-	Bitmap* bitmap = static_cast<Bitmap*>(binder.getInstance("Bitmap", 1));
+	GBitmap* bitmap = static_cast<GBitmap*>(binder.getInstance("Bitmap", 1));
 
 	float x, y;
 	bitmap->getAnchorPoint(&x, &y);
@@ -104,7 +104,7 @@ int BitmapBinder::setTexture(lua_State *L)
 {
     Binder binder(L);
 
-    Bitmap *bitmap = static_cast<Bitmap*>(binder.getInstance("Bitmap", 1));
+    GBitmap *bitmap = static_cast<GBitmap*>(binder.getInstance("Bitmap", 1));
     TextureBase *textureBase = static_cast<TextureBase*>(binder.getInstance("TextureBase", 2));
     bitmap->setTexture(textureBase);
 
@@ -115,7 +115,7 @@ int BitmapBinder::setTextureRegion(lua_State *L)
 {
     Binder binder(L);
 
-    Bitmap *bitmap = static_cast<Bitmap*>(binder.getInstance("Bitmap", 1));
+    GBitmap *bitmap = static_cast<GBitmap*>(binder.getInstance("Bitmap", 1));
     GTextureRegion *bitmapData = static_cast<GTextureRegion*>(binder.getInstance("TextureRegion", 2));
     bitmap->setTextureRegion(bitmapData);
 

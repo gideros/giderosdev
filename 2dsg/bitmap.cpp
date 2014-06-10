@@ -1,12 +1,12 @@
 #include "bitmap.h"
 #include "ogl.h"
 
-void Bitmap::doDraw(const CurrentTransform&, float sx, float sy, float ex, float ey)
+void GBitmap::doDraw(const CurrentTransform&, float sx, float sy, float ex, float ey)
 {
 	graphicsBase_.draw();
 }
 
-void Bitmap::updateBounds()
+void GBitmap::updateBounds()
 {
     if (bitmapdata_ != NULL)
     {
@@ -30,7 +30,7 @@ void Bitmap::updateBounds()
     }
 }
 
-void Bitmap::extraBounds(float* minx, float* miny, float* maxx, float* maxy) const
+void GBitmap::extraBounds(float* minx, float* miny, float* maxx, float* maxy) const
 {
     if (minx)
         *minx = minx_;
@@ -42,7 +42,7 @@ void Bitmap::extraBounds(float* minx, float* miny, float* maxx, float* maxy) con
         *maxy = maxy_;
 }
 
-void Bitmap::setCoords()
+void GBitmap::setCoords()
 {
 	if (bitmapdata_ != NULL)
 	{
@@ -103,7 +103,7 @@ void Bitmap::setCoords()
 	}
 }
 
-void Bitmap::setAnchorPoint(float x, float y)
+void GBitmap::setAnchorPoint(float x, float y)
 {
 	anchorx_ = x;
 	anchory_ = y;
@@ -137,7 +137,7 @@ void Bitmap::setAnchorPoint(float x, float y)
     updateBounds();
 }
 
-void Bitmap::getAnchorPoint(float* x, float* y) const
+void GBitmap::getAnchorPoint(float* x, float* y) const
 {
 	if (x)
 		*x = anchorx_;
@@ -145,7 +145,7 @@ void Bitmap::getAnchorPoint(float* x, float* y) const
 		*y = anchory_;
 }
 
-void Bitmap::setTextureRegion(GTextureRegion *bitmapdata)
+void GBitmap::setTextureRegion(GTextureRegion *bitmapdata)
 {
     GTextureRegion *originalbitmapdata = bitmapdata_;
     TextureBase *originaltexturebase = texturebase_;
@@ -162,7 +162,7 @@ void Bitmap::setTextureRegion(GTextureRegion *bitmapdata)
         originaltexturebase->unref();
 }
 
-void Bitmap::setTexture(TextureBase *texturebase)
+void GBitmap::setTexture(TextureBase *texturebase)
 {
     GTextureRegion *originalbitmapdata = bitmapdata_;
     TextureBase *originaltexturebase = texturebase_;
