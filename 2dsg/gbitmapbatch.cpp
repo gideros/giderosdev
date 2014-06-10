@@ -1,7 +1,7 @@
 #include "gbitmapbatch.h"
 #include "bitmapdata.h"
 
-GBitmapArray::GBitmapArray(Application *application, BitmapData *bitmapdata) : Sprite(application)
+GBitmapArray::GBitmapArray(Application *application, BitmapData *bitmapdata) : GSprite(application)
 {
     bitmapdata_ = bitmapdata;
     bitmapdata_->ref();
@@ -12,7 +12,7 @@ GBitmapArray::GBitmapArray(Application *application, BitmapData *bitmapdata) : S
     anchory_ = 0;
 }
 
-GBitmapArray::GBitmapArray(Application *application, TextureBase *texturebase) : Sprite(application)
+GBitmapArray::GBitmapArray(Application *application, TextureBase *texturebase) : GSprite(application)
 {
     texturebase_ = texturebase;
     texturebase_->ref();

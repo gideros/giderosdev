@@ -5,7 +5,7 @@
 
 class Application;
 
-class SplashScreen : public Sprite
+class SplashScreen : public GSprite
 {
 public:
 	SplashScreen(Application* application);

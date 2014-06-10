@@ -49,11 +49,11 @@ void Stage::enterFrame(int deltaFrameCount)
 	lastTime_ = t;
 	lastFrameCount_ = frameCount;
 
-	static std::vector<Sprite*> v;
+	static std::vector<GSprite*> v;
 	v.resize(allSpritesWithListeners_.size());
 	{
 		int i = 0;
-		std::set<Sprite*>::iterator iter = allSpritesWithListeners_.begin(), end = allSpritesWithListeners_.end();
+		std::set<GSprite*>::iterator iter = allSpritesWithListeners_.begin(), end = allSpritesWithListeners_.end();
 		for (; iter != end; ++iter, ++i)
 			v[i] = *iter;
 	}
@@ -115,13 +115,13 @@ void Stage::populateSpritesWithListeners()
 {
     spritesWithListeners_.clear();
 
-    static std::stack<Sprite*> stack;
+    static std::stack<GSprite*> stack;
 
     stack.push(this);
 
     while (stack.empty() == false)
     {
-        Sprite* sprite = stack.top();
+        GSprite* sprite = stack.top();
         stack.pop();
 
         if (sprite->hasEventListener(MouseEvent::MOUSE_DOWN)     ||

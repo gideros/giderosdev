@@ -131,7 +131,7 @@ int MovieClipBinder::create(lua_State* L)
 		lua_pop(L, 1);
 
 		lua_rawgeti(L, -1, 3);
-		Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", -1));
+		GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", -1));
 		lua_pop(L, 1);
 
 		std::vector<Parameter> parameters;

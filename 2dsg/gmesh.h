@@ -7,7 +7,7 @@
 
 class Application;
 
-class GMesh: public Sprite
+class GMesh: public GSprite
 {
 public:
     GMesh(Application *application);

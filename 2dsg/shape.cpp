@@ -254,7 +254,7 @@ static void createTexturePolygon(	TextureBase* texture, const Matrix& matrix,
 	result.data = texture->data;
 }
 
-Shape::Shape(Application *application) : Sprite(application)
+Shape::Shape(Application *application) : GSprite(application)
 {
 	clear();
 }

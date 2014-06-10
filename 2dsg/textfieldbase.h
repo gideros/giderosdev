@@ -8,10 +8,10 @@
 
 class Application;
 
-class TextFieldBase : public Sprite
+class TextFieldBase : public GSprite
 {
 public:
-    TextFieldBase(Application *application) : Sprite(application) {}
+    TextFieldBase(Application *application) : GSprite(application) {}
     virtual ~TextFieldBase() {}
 
 	virtual void setText(const char* text) = 0;

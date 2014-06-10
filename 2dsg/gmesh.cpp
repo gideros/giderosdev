@@ -2,7 +2,7 @@
 #include <ogl.h>
 #include <color.h>
 
-GMesh::GMesh(Application *application) : Sprite(application)
+GMesh::GMesh(Application *application) : GSprite(application)
 {
     texture_ = NULL;
     sx_ = 1;

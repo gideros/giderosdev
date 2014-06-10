@@ -66,7 +66,7 @@ static GraphicsBase createGraphicsBase(TextureData* data, int x, int y)
 	return graphicsBase;
 }
 
-SplashScreen::SplashScreen(Application* application) : Sprite(application)
+SplashScreen::SplashScreen(Application* application) : GSprite(application)
 {
 	Dib dib1 = logo2dib(application, logo1, sizeof(logo1), 320, 44);
 	Dib dib2 = logo2dib(application, logo2, sizeof(logo2), 320, 96);

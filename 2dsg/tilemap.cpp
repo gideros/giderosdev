@@ -8,7 +8,7 @@ TileMap::TileMap(Application* application,
 				 int tilewidth, int tileheight,
 				 int spacingx, int spacingy,
 				 int marginx, int marginy,
-                 int displaywidth, int displayheight) : Sprite(application)
+                 int displaywidth, int displayheight) : GSprite(application)
 {
 	texture_ = texture;
 	texture_->ref();

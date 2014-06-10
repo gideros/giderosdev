@@ -59,25 +59,25 @@ SpriteBinder::SpriteBinder(lua_State* L)
 
 	lua_newtable(L);
 
-	lua_pushinteger(L, Sprite::ZERO);
+	lua_pushinteger(L, GSprite::ZERO);
 	lua_setfield(L, -2, "ZERO");
-	lua_pushinteger(L, Sprite::ONE);
+	lua_pushinteger(L, GSprite::ONE);
 	lua_setfield(L, -2, "ONE");
-	lua_pushinteger(L, Sprite::SRC_COLOR);
+	lua_pushinteger(L, GSprite::SRC_COLOR);
 	lua_setfield(L, -2, "SRC_COLOR");
-	lua_pushinteger(L, Sprite::ONE_MINUS_SRC_COLOR);
+	lua_pushinteger(L, GSprite::ONE_MINUS_SRC_COLOR);
 	lua_setfield(L, -2, "ONE_MINUS_SRC_COLOR");
-	lua_pushinteger(L, Sprite::DST_COLOR);
+	lua_pushinteger(L, GSprite::DST_COLOR);
 	lua_setfield(L, -2, "DST_COLOR");
-	lua_pushinteger(L, Sprite::ONE_MINUS_DST_COLOR);
+	lua_pushinteger(L, GSprite::ONE_MINUS_DST_COLOR);
 	lua_setfield(L, -2, "ONE_MINUS_DST_COLOR");
-	lua_pushinteger(L, Sprite::SRC_ALPHA);
+	lua_pushinteger(L, GSprite::SRC_ALPHA);
 	lua_setfield(L, -2, "SRC_ALPHA");
-	lua_pushinteger(L, Sprite::ONE_MINUS_SRC_ALPHA);
+	lua_pushinteger(L, GSprite::ONE_MINUS_SRC_ALPHA);
 	lua_setfield(L, -2, "ONE_MINUS_SRC_ALPHA");
-	lua_pushinteger(L, Sprite::DST_ALPHA);
+	lua_pushinteger(L, GSprite::DST_ALPHA);
 	lua_setfield(L, -2, "DST_ALPHA");
-	lua_pushinteger(L, Sprite::ONE_MINUS_DST_ALPHA);
+	lua_pushinteger(L, GSprite::ONE_MINUS_DST_ALPHA);
 	lua_setfield(L, -2, "ONE_MINUS_DST_ALPHA");
 	//lua_pushinteger(L, Sprite::CONSTANT_COLOR);
 	//lua_setfield(L, -2, "CONSTANT_COLOR");
@@ -87,7 +87,7 @@ SpriteBinder::SpriteBinder(lua_State* L)
 	//lua_setfield(L, -2, "CONSTANT_ALPHA");
 	//lua_pushinteger(L, Sprite::ONE_MINUS_CONSTANT_ALPHA);
 	//lua_setfield(L, -2, "ONE_MINUS_CONSTANT_ALPHA");
-	lua_pushinteger(L, Sprite::SRC_ALPHA_SATURATE);
+	lua_pushinteger(L, GSprite::SRC_ALPHA_SATURATE);
 	lua_setfield(L, -2, "SRC_ALPHA_SATURATE");
 
 	lua_setglobal(L, "BlendFactor");
@@ -100,7 +100,7 @@ int SpriteBinder::create(lua_State* L)
     LuaApplication* application = static_cast<LuaApplication*>(luaL_getdata(L));
 
 	Binder binder(L);
-    Sprite* sprite = new Sprite(application->getApplication());
+    GSprite* sprite = new GSprite(application->getApplication());
 	binder.pushInstance("Sprite", sprite);
 
 /*	lua_getglobal(L, "Graphics");
@@ -117,7 +117,7 @@ int SpriteBinder::create(lua_State* L)
 int SpriteBinder::destruct(lua_State* L)
 {
 	void* ptr = *(void**)lua_touserdata(L, 1);
-	Sprite* sprite = static_cast<Sprite*>(ptr);
+	GSprite* sprite = static_cast<GSprite*>(ptr);
 	sprite->unref();
 
 	return 0;
@@ -144,8 +144,8 @@ int SpriteBinder::addChild(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::addChild", 0);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
-	Sprite* child = static_cast<Sprite*>(binder.getInstance("Sprite", 2));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
+	GSprite* child = static_cast<GSprite*>(binder.getInstance("Sprite", 2));
 
 	GStatus status;
 	if (sprite->canChildBeAdded(child, &status) == false)
@@ -194,8 +194,8 @@ int SpriteBinder::addChildAt(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::addChildAt", 0);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
-	Sprite* child = static_cast<Sprite*>(binder.getInstance("Sprite", 2));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
+	GSprite* child = static_cast<GSprite*>(binder.getInstance("Sprite", 2));
 	int index = luaL_checkinteger(L, 3);
 
 	GStatus status;
@@ -245,13 +245,13 @@ int SpriteBinder::removeChildAt(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::removeChildAt", 0);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
 	int index = luaL_checknumber(L, 2);
 
 	if (index < 1 || index > sprite->childCount())
 		return luaL_error(L, GStatus(2006).errorString());	// Error #2006: The supplied index is out of bounds.
 
-	Sprite* child = sprite->getChildAt(index - 1);
+	GSprite* child = sprite->getChildAt(index - 1);
 
 	lua_getfield(L, 1, "__children");	// push sprite.__children
 	lua_pushlightuserdata(L, child);
@@ -276,8 +276,8 @@ int SpriteBinder::removeChild(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::removeChild", 0);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
-	Sprite* child = static_cast<Sprite*>(binder.getInstance("Sprite", 2));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
+	GSprite* child = static_cast<GSprite*>(binder.getInstance("Sprite", 2));
 
 	GStatus status;
 	int index = sprite->getChildIndex(child, &status);
@@ -303,7 +303,7 @@ int SpriteBinder::numChildren(lua_State* L)
 	StackChecker checker(L, "numChildren", 1);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	lua_pushinteger(L, sprite->childCount());
 	
@@ -315,13 +315,13 @@ int SpriteBinder::getChildAt(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::getChildAt", 1);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 	int index = luaL_checkinteger(L, 2);
 
 	if (index < 1 || index > sprite->childCount())
 		return luaL_error(L, GStatus(2006).errorString());	// Error #2006: The supplied index is out of bounds.
 
-	Sprite* child = sprite->getChildAt(index - 1);
+	GSprite* child = sprite->getChildAt(index - 1);
 
 	lua_getfield(L, 1, "__children");	// push sprite.__children
 	lua_pushlightuserdata(L, child);
@@ -336,7 +336,7 @@ int SpriteBinder::getX(lua_State* L)
 	StackChecker checker(L, "getX", 1);
 	
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	lua_pushnumber(L, sprite->x());
 
@@ -348,7 +348,7 @@ int SpriteBinder::getY(lua_State* L)
 	StackChecker checker(L, "getY", 1);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	lua_pushnumber(L, sprite->y());
 
@@ -360,7 +360,7 @@ int SpriteBinder::getRotation(lua_State* L)
 	StackChecker checker(L, "getRotation", 1);
 	
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	lua_pushnumber(L, sprite->rotation());
 
@@ -372,7 +372,7 @@ int SpriteBinder::getScaleX(lua_State* L)
 	StackChecker checker(L, "getScaleX", 1);
 	
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	lua_pushnumber(L, sprite->scaleX());
 
@@ -384,7 +384,7 @@ int SpriteBinder::getScaleY(lua_State* L)
 	StackChecker checker(L, "getScaleY", 1);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	lua_pushnumber(L, sprite->scaleY());
 
@@ -396,7 +396,7 @@ int SpriteBinder::setX(lua_State* L)
 	StackChecker checker(L, "setX");
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	double x = luaL_checknumber(L, 2);
 	sprite->setX(x);
@@ -409,7 +409,7 @@ int SpriteBinder::setY(lua_State* L)
 	StackChecker checker(L, "setY");
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	double y = luaL_checknumber(L, 2);
 	sprite->setY(y);
@@ -422,7 +422,7 @@ int SpriteBinder::setRotation(lua_State* L)
 	StackChecker checker(L, "setRotation");
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	double rotation = luaL_checknumber(L, 2);
 	sprite->setRotation(rotation);
@@ -435,7 +435,7 @@ int SpriteBinder::setScaleX(lua_State* L)
 	StackChecker checker(L, "setScaleX");
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	double scaleX = luaL_checknumber(L, 2);
 	sprite->setScaleX(scaleX);
@@ -448,7 +448,7 @@ int SpriteBinder::setScaleY(lua_State* L)
 	StackChecker checker(L, "setScaleY");
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	double scaleY = luaL_checknumber(L, 2);
 	sprite->setScaleY(scaleY);
@@ -461,7 +461,7 @@ int SpriteBinder::setPosition(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::setPosition", 0);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
 
 	lua_Number x = luaL_checknumber(L, 2);
 	lua_Number y = luaL_checknumber(L, 3);
@@ -475,7 +475,7 @@ int SpriteBinder::getPosition(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::getPosition", 2);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
 
 	lua_pushnumber(L, sprite->x());
 	lua_pushnumber(L, sprite->y());
@@ -489,7 +489,7 @@ int SpriteBinder::setScale(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::setScale", 0);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
 
 	lua_Number x = luaL_checknumber(L, 2);
 	lua_Number y = lua_isnoneornil(L, 3) ? x : luaL_checknumber(L, 3);
@@ -503,7 +503,7 @@ int SpriteBinder::getScale(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::getScale", 2);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
 
 	lua_pushnumber(L, sprite->scaleX());
 	lua_pushnumber(L, sprite->scaleY());
@@ -517,7 +517,7 @@ int SpriteBinder::getParent(lua_State* L)
 	StackChecker checker(L, "getParent", 1);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	lua_getfield(L, 1, "__parent");
 
@@ -529,8 +529,8 @@ int SpriteBinder::contains(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::contains", 1);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
-	Sprite* child = static_cast<Sprite*>(binder.getInstance("Sprite", 2));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
+	GSprite* child = static_cast<GSprite*>(binder.getInstance("Sprite", 2));
 
 	lua_pushboolean(L, sprite->contains(child));
 	
@@ -543,8 +543,8 @@ int SpriteBinder::getChildIndex(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::getChildIndex", 1);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
-	Sprite* child = static_cast<Sprite*>(binder.getInstance("Sprite", 2));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
+	GSprite* child = static_cast<GSprite*>(binder.getInstance("Sprite", 2));
 
 
 	GStatus status;
@@ -567,8 +567,8 @@ int SpriteBinder::removeFromParent(lua_State* L)
 	StackChecker checker(L, "removeFromParent", 0);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
-	Sprite* parent = sprite->parent();
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
+	GSprite* parent = sprite->parent();
 
 	if (parent == NULL)
 		return 0;
@@ -593,7 +593,7 @@ int SpriteBinder::localToGlobal(lua_State* L)
 	StackChecker checker(L, "localToGlobal", 2);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	double x = luaL_checknumber(L, 2);
 	double y = luaL_checknumber(L, 3);
@@ -612,7 +612,7 @@ int SpriteBinder::globalToLocal(lua_State* L)
 	StackChecker checker(L, "globalToLocal", 2);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	double x = luaL_checknumber(L, 2);
 	double y = luaL_checknumber(L, 3);
@@ -631,7 +631,7 @@ int SpriteBinder::isVisible(lua_State* L)
 	StackChecker checker(L, "isVisible", 1);
 	
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	lua_pushboolean(L, sprite->visible());
 
@@ -643,7 +643,7 @@ int SpriteBinder::setVisible(lua_State* L)
 	StackChecker checker(L, "setVisible");
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	int visible = lua_toboolean(L, 2);
 	sprite->setVisible(visible);
@@ -677,7 +677,7 @@ int SpriteBinder::getColorTransform(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::getColorTransform", 4);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
 
 	lua_pushnumber(L, sprite->colorTransform().redMultiplier());
 	lua_pushnumber(L, sprite->colorTransform().greenMultiplier());
@@ -737,7 +737,7 @@ int SpriteBinder::setColorTransform(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::setColorTransform", 0);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
 
 	lua_Number redMultiplier = luaL_optnumber(L, 2, 1.0);
 	lua_Number greenMultiplier = luaL_optnumber(L, 3, 1.0);
@@ -760,7 +760,7 @@ int SpriteBinder::hitTestPoint(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::hitTestPoint", 1);
 	
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	double x = luaL_checknumber(L, 2);
 	double y = luaL_checknumber(L, 3);
@@ -780,7 +780,7 @@ int SpriteBinder::getWidth(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::getWidth", 1);
 	
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	lua_pushnumber(L, sprite->width());
 
@@ -792,7 +792,7 @@ int SpriteBinder::getHeight(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::getHeight", 1);
 	
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	lua_pushnumber(L, sprite->height());
 
@@ -805,7 +805,7 @@ int SpriteBinder::getMatrix(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::getMatrix", 1);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	lua_getglobal(L, "Matrix");
 	lua_getfield(L, -1, "new");
@@ -826,7 +826,7 @@ int SpriteBinder::setMatrix(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::setMatrix", 0);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
 	Matrix* matrix = static_cast<Matrix*>(binder.getInstance("Matrix", 2));
 
 	sprite->setMatrix(*matrix);
@@ -839,7 +839,7 @@ int SpriteBinder::getAlpha(lua_State* L)
 	StackChecker checker(L, "getAlpha", 1);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	lua_pushnumber(L, sprite->alpha());
 
@@ -851,7 +851,7 @@ int SpriteBinder::setAlpha(lua_State* L)
 	StackChecker checker(L, "setAlpha", 0);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite"));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite"));
 
 	lua_Number alpha = luaL_checknumber(L, 2);
 	sprite->setAlpha(alpha);
@@ -864,8 +864,8 @@ int SpriteBinder::getBounds(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::getBounds", 4);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
-	Sprite* targetCoordinateSpace = static_cast<Sprite*>(binder.getInstance("Sprite", 2));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
+	GSprite* targetCoordinateSpace = static_cast<GSprite*>(binder.getInstance("Sprite", 2));
 
 	float minx, miny, maxx, maxy;
 	sprite->getBounds(targetCoordinateSpace, &minx, &miny, &maxx, &maxy);
@@ -894,9 +894,9 @@ int SpriteBinder::setBlendFunc(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::setBlendFunc", 0);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
-	Sprite::BlendFactor src = static_cast<Sprite::BlendFactor>(luaL_checkinteger(L, 2));
-	Sprite::BlendFactor dst = static_cast<Sprite::BlendFactor>(luaL_checkinteger(L, 3));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
+	GSprite::BlendFactor src = static_cast<GSprite::BlendFactor>(luaL_checkinteger(L, 2));
+	GSprite::BlendFactor dst = static_cast<GSprite::BlendFactor>(luaL_checkinteger(L, 3));
 
 	sprite->setBlendFunc(src, dst);
 
@@ -909,7 +909,7 @@ int SpriteBinder::clearBlendFunc(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::clearBlendFunc", 0);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
 	sprite->clearBlendFunc();
 
 	return 0;
@@ -920,7 +920,7 @@ int SpriteBinder::set(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::set", 0);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
 
 	const char* param = luaL_checkstring(L, 2);
 	lua_Number value = luaL_checknumber(L, 3);
@@ -942,7 +942,7 @@ int SpriteBinder::get(lua_State* L)
 	StackChecker checker(L, "SpriteBinder::get", 1);
 
 	Binder binder(L);
-	Sprite* sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 1));
+	GSprite* sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 1));
 
 	const char* param = luaL_checkstring(L, 2);
 

@@ -8,10 +8,10 @@
 #include "stage.h"
 #include <application.h>
 
-std::set<Sprite*> Sprite::allSprites_;
-std::set<Sprite*> Sprite::allSpritesWithListeners_;
+std::set<GSprite*> GSprite::allSprites_;
+std::set<GSprite*> GSprite::allSpritesWithListeners_;
 
-Sprite::Sprite(Application* application) :
+GSprite::GSprite(Application* application) :
     application_(application),
     parent_(NULL),
     isVisible_(true)
@@ -28,7 +28,7 @@ Sprite::Sprite(Application* application) :
 	dfactor_ = -1;
 }
 
-Sprite::~Sprite()
+GSprite::~GSprite()
 {
 	delete colorTransform_;
 //	delete graphics_;
@@ -40,7 +40,7 @@ Sprite::~Sprite()
 	allSpritesWithListeners_.erase(this);
 }
 
-void Sprite::doDraw(const CurrentTransform&, float sx, float sy, float ex, float ey)
+void GSprite::doDraw(const CurrentTransform&, float sx, float sy, float ex, float ey)
 {
 
 }
@@ -138,20 +138,20 @@ private:
 
 
 
-void Sprite::draw(const CurrentTransform& transform, float sx, float sy, float ex, float ey)
+void GSprite::draw(const CurrentTransform& transform, float sx, float sy, float ex, float ey)
 {
     {
         this->worldTransform_ = transform * this->localTransform_.matrix();
 
-        static GGPool<std::stack<Sprite*> > stackPool;
-        std::stack<Sprite*> &stack = *stackPool.create();
+        static GGPool<std::stack<GSprite*> > stackPool;
+        std::stack<GSprite*> &stack = *stackPool.create();
 
         for (size_t i = 0; i < children_.size(); ++i)
             stack.push(children_[i]);
 
         while (!stack.empty())
         {
-            Sprite *sprite = stack.top();
+            GSprite *sprite = stack.top();
             stack.pop();
 
             if (sprite->isVisible_ == false)
@@ -169,14 +169,14 @@ void Sprite::draw(const CurrentTransform& transform, float sx, float sy, float e
     }
 
 
-    static GGPool<std::stack<std::pair<Sprite*, bool> > > stackPool;
-    std::stack<std::pair<Sprite*, bool> > &stack = *stackPool.create();
+    static GGPool<std::stack<std::pair<GSprite*, bool> > > stackPool;
+    std::stack<std::pair<GSprite*, bool> > &stack = *stackPool.create();
 
 	stack.push(std::make_pair(this, false));
 
 	while (stack.empty() == false)
 	{
-		Sprite* sprite = stack.top().first;
+		GSprite* sprite = stack.top().first;
 		bool pop = stack.top().second;
 		stack.pop();
 
@@ -230,7 +230,7 @@ void Sprite::draw(const CurrentTransform& transform, float sx, float sy, float e
 }
 
 
-bool Sprite::canChildBeAdded(Sprite* sprite, GStatus* status)
+bool GSprite::canChildBeAdded(GSprite* sprite, GStatus* status)
 {
 	if (sprite == this)
 	{
@@ -251,7 +251,7 @@ bool Sprite::canChildBeAdded(Sprite* sprite, GStatus* status)
 	return true;
 }
 
-bool Sprite::canChildBeAddedAt(Sprite* sprite, int index, GStatus* status)
+bool GSprite::canChildBeAddedAt(GSprite* sprite, int index, GStatus* status)
 {
 	if (canChildBeAdded(sprite, status) == false)
 		return false;
@@ -266,12 +266,12 @@ bool Sprite::canChildBeAddedAt(Sprite* sprite, int index, GStatus* status)
 	return true;
 }
 
-void Sprite::addChild(Sprite* sprite, GStatus* status)
+void GSprite::addChild(GSprite* sprite, GStatus* status)
 {
 	addChildAt(sprite, childCount(), status);
 }
 
-void Sprite::addChildAt(Sprite* sprite, int index, GStatus* status)
+void GSprite::addChildAt(GSprite* sprite, int index, GStatus* status)
 {
 	if (canChildBeAddedAt(sprite, index, status) == false)
 		return;
@@ -285,7 +285,7 @@ void Sprite::addChildAt(Sprite* sprite, int index, GStatus* status)
 	{
 		*std::find(children_.begin(), children_.end(), sprite) = NULL;
 		children_.insert(children_.begin() + index, sprite);
-		children_.erase(std::find(children_.begin(), children_.end(), (Sprite*)NULL));
+		children_.erase(std::find(children_.begin(), children_.end(), (GSprite*)NULL));
 		return;
 	}
 
@@ -328,7 +328,7 @@ void Sprite::addChildAt(Sprite* sprite, int index, GStatus* status)
 /**
    Returns the index position of a child Sprite instance.
 */
-int Sprite::getChildIndex(Sprite* sprite, GStatus* status)
+int GSprite::getChildIndex(GSprite* sprite, GStatus* status)
 {
 	SpriteVector::iterator iter = std::find(children_.begin(), children_.end(), sprite);
 
@@ -344,7 +344,7 @@ int Sprite::getChildIndex(Sprite* sprite, GStatus* status)
 /**
    Changes the position of an existing child in the display object container.
 */
-void Sprite::setChildIndex(Sprite* child, int index, GStatus* status)
+void GSprite::setChildIndex(GSprite* child, int index, GStatus* status)
 {
 	int currentIndex = getChildIndex(child, status);
 
@@ -362,7 +362,7 @@ void Sprite::setChildIndex(Sprite* child, int index, GStatus* status)
 	children_.insert(children_.begin() + index, child);
 }
 
-void Sprite::swapChildren(Sprite* child1, Sprite* child2, GStatus* status)
+void GSprite::swapChildren(GSprite* child1, GSprite* child2, GStatus* status)
 {
 	int index1 = getChildIndex(child1, status);
 	if (index1 == childCount())
@@ -375,7 +375,7 @@ void Sprite::swapChildren(Sprite* child1, Sprite* child2, GStatus* status)
 	std::swap(children_[index1], children_[index2]);
 }
 
-void Sprite::swapChildrenAt(int index1, int index2, GStatus* status)
+void GSprite::swapChildrenAt(int index1, int index2, GStatus* status)
 {
 	if (index1 < 0 || index1 >= childCount())
 	{
@@ -394,7 +394,7 @@ void Sprite::swapChildrenAt(int index1, int index2, GStatus* status)
 	std::swap(children_[index1], children_[index2]);
 }
 
-Sprite* Sprite::getChildAt(int index, GStatus* status) const
+GSprite* GSprite::getChildAt(int index, GStatus* status) const
 {
 	if (index < 0 || index >= childCount())
 	{
@@ -406,7 +406,7 @@ Sprite* Sprite::getChildAt(int index, GStatus* status) const
 	return children_[index];
 }
 
-void Sprite::removeChildAt(int index, GStatus* status)
+void GSprite::removeChildAt(int index, GStatus* status)
 {
 	if (index < 0 || index >= childCount())
 	{
@@ -417,7 +417,7 @@ void Sprite::removeChildAt(int index, GStatus* status)
 
     void *pool = application_->createAutounrefPool();
 
-	Sprite* child = children_[index];
+	GSprite* child = children_[index];
 
     Stage *stage = child->getStage();
 
@@ -440,7 +440,7 @@ void Sprite::removeChildAt(int index, GStatus* status)
     application_->deleteAutounrefPool(pool);
 }
 
-void Sprite::removeChild(Sprite* child, GStatus* status)
+void GSprite::removeChild(GSprite* child, GStatus* status)
 {
 	int index = getChildIndex(child, status);
 	if (index == childCount())
@@ -453,7 +453,7 @@ void Sprite::removeChild(Sprite* child, GStatus* status)
 	removeChildAt(index);
 }
 
-void Sprite::removeChild(int index, GStatus* status)
+void GSprite::removeChild(int index, GStatus* status)
 {
 	if (index < 0 || index >= childCount())
 	{
@@ -465,14 +465,14 @@ void Sprite::removeChild(int index, GStatus* status)
 	removeChildAt(index);
 }
 
-bool Sprite::contains(Sprite* sprite) const
+bool GSprite::contains(GSprite* sprite) const
 {
-	std::stack<const Sprite*> stack;
+	std::stack<const GSprite*> stack;
 	stack.push(this);
 
 	while (stack.empty() == false)
 	{
-		const Sprite* s = stack.top();
+		const GSprite* s = stack.top();
 		stack.pop();
 
 		if (s == sprite)
@@ -485,7 +485,7 @@ bool Sprite::contains(Sprite* sprite) const
 	return false;
 }
 
-void Sprite::replaceChild(Sprite* oldChild, Sprite* newChild)
+void GSprite::replaceChild(GSprite* oldChild, GSprite* newChild)
 {
 	// TODO: burada addedToStage ile removedFromStage'i halletmek lazim
 	SpriteVector::iterator iter = std::find(children_.begin(), children_.end(), oldChild);
@@ -504,9 +504,9 @@ void Sprite::replaceChild(Sprite* oldChild, Sprite* newChild)
 	newChild->parent_ = this;
 }
 
-void Sprite::localToGlobal(float x, float y, float* tx, float* ty) const
+void GSprite::localToGlobal(float x, float y, float* tx, float* ty) const
 {
-	const Sprite* curr = this;
+	const GSprite* curr = this;
 
 	while (curr)
 	{
@@ -521,11 +521,11 @@ void Sprite::localToGlobal(float x, float y, float* tx, float* ty) const
 		*ty = y;
 }
 
-void Sprite::globalToLocal(float x, float y, float* tx, float* ty) const
+void GSprite::globalToLocal(float x, float y, float* tx, float* ty) const
 {
-	std::stack<const Sprite*> stack;
+	std::stack<const GSprite*> stack;
 
-	const Sprite* curr = this;
+	const GSprite* curr = this;
 	while (curr)
 	{
 		stack.push(curr);
@@ -545,7 +545,7 @@ void Sprite::globalToLocal(float x, float y, float* tx, float* ty) const
 		*ty = y;
 }
 
-void Sprite::objectBounds(float* minx, float* miny, float* maxx, float* maxy) const
+void GSprite::objectBounds(float* minx, float* miny, float* maxx, float* maxy) const
 {
     boundsHelper(Matrix(), minx, miny, maxx, maxy);
 }
@@ -588,7 +588,7 @@ void Sprite::objectBounds(float* minx, float* miny, float* maxx, float* maxy) co
 }
 #endif
 
-void Sprite::localBounds(float* minx, float* miny, float* maxx, float* maxy) const
+void GSprite::localBounds(float* minx, float* miny, float* maxx, float* maxy) const
 {
     boundsHelper(localTransform_.matrix(), minx, miny, maxx, maxy);
 }
@@ -690,7 +690,7 @@ void Sprite::globalBounds(float* minx, float* miny, float* maxx, float* maxy) co
 }
 #endif
 
-float Sprite::width() const
+float GSprite::width() const
 {
 	float minx, maxx;
 	localBounds(&minx, 0, &maxx, 0);
@@ -701,7 +701,7 @@ float Sprite::width() const
 	return maxx - minx;
 }
 
-float Sprite::height() const
+float GSprite::height() const
 {
 	float miny, maxy;
 	localBounds(0, &miny, 0, &maxy);
@@ -712,7 +712,7 @@ float Sprite::height() const
 	return maxy - miny;
 }
 
-bool Sprite::hitTestPoint(float x, float y) const
+bool GSprite::hitTestPoint(float x, float y) const
 {
 	float tx, ty;
 	globalToLocal(x, y, &tx, &ty);
@@ -723,14 +723,14 @@ bool Sprite::hitTestPoint(float x, float y) const
 	return (tx >= minx && ty >= miny && tx <= maxx && ty <= maxy);
 }
 
-Stage *Sprite::getStage() const
+Stage *GSprite::getStage() const
 {
-    const Sprite* curr = this;
+    const GSprite* curr = this;
 
     while (curr != NULL)
 	{
 		if (curr->isStage() == true)
-            return static_cast<Stage*>(const_cast<Sprite*>(curr));
+            return static_cast<Stage*>(const_cast<GSprite*>(curr));
 
 		curr = curr->parent();
 	}
@@ -739,19 +739,19 @@ Stage *Sprite::getStage() const
 }
 
 
-void Sprite::recursiveDispatchEvent(Event* event, bool canBeStopped, bool reverse)
+void GSprite::recursiveDispatchEvent(Event* event, bool canBeStopped, bool reverse)
 {
     void *pool = application_->createAutounrefPool();
 
-	std::vector<Sprite*> sprites;		// NOTE: bunu static yapma. recursiveDispatchEvent icindeyken recursiveDispatchEvent cagirilabiliyor
+	std::vector<GSprite*> sprites;		// NOTE: bunu static yapma. recursiveDispatchEvent icindeyken recursiveDispatchEvent cagirilabiliyor
 
-	std::stack<Sprite*> stack;
+	std::stack<GSprite*> stack;
 
 	stack.push(this);
 
 	while (stack.empty() == false)
 	{
-		Sprite* sprite = stack.top();
+		GSprite* sprite = stack.top();
 		stack.pop();
 
 		sprites.push_back(sprite);
@@ -780,22 +780,22 @@ void Sprite::recursiveDispatchEvent(Event* event, bool canBeStopped, bool revers
     application_->deleteAutounrefPool(pool);
 }
 
-float Sprite::alpha() const
+float GSprite::alpha() const
 {
 	return alpha_;
 }
 
-void Sprite::boundsHelper(const Matrix& transform, float* minx, float* miny, float* maxx, float* maxy) const
+void GSprite::boundsHelper(const Matrix& transform, float* minx, float* miny, float* maxx, float* maxy) const
 {
     {
         this->worldTransform_ = transform;
-        std::stack<Sprite*> stack; // this shouldn't be static because MovieClip calls draw again
+        std::stack<GSprite*> stack; // this shouldn't be static because MovieClip calls draw again
         for (size_t i = 0; i < children_.size(); ++i)
             stack.push(children_[i]);
 
         while (!stack.empty())
         {
-            Sprite *sprite = stack.top();
+            GSprite *sprite = stack.top();
             stack.pop();
 
             sprite->worldTransform_ = sprite->parent_->worldTransform_ * sprite->localTransform_.matrix();
@@ -808,12 +808,12 @@ void Sprite::boundsHelper(const Matrix& transform, float* minx, float* miny, flo
     {
         float gminx = 1e30, gminy = 1e30, gmaxx = -1e30, gmaxy = -1e30;
 
-        std::stack<const Sprite*> stack; // this shouldn't be static because MovieClip calls draw again
+        std::stack<const GSprite*> stack; // this shouldn't be static because MovieClip calls draw again
         stack.push(this);
 
         while (!stack.empty())
         {
-            const Sprite *sprite = stack.top();
+            const GSprite *sprite = stack.top();
             stack.pop();
 
             float eminx, eminy, emaxx, emaxy;
@@ -851,11 +851,11 @@ void Sprite::boundsHelper(const Matrix& transform, float* minx, float* miny, flo
     }
 }
 
-void Sprite::getBounds(const Sprite* targetCoordinateSpace, float* minx, float* miny, float* maxx, float* maxy) const
+void GSprite::getBounds(const GSprite* targetCoordinateSpace, float* minx, float* miny, float* maxx, float* maxy) const
 {
     bool found = false;
     Matrix transform;
-    const Sprite *curr = this;
+    const GSprite *curr = this;
     while (curr)
     {
         if (curr == targetCoordinateSpace)
@@ -870,7 +870,7 @@ void Sprite::getBounds(const Sprite* targetCoordinateSpace, float* minx, float* 
     if (found == false)
     {
         Matrix inverse;
-        const Sprite *curr = targetCoordinateSpace;
+        const GSprite *curr = targetCoordinateSpace;
         while (curr)
         {
             inverse  = inverse * curr->localTransform_.matrix().inverse();
@@ -943,29 +943,29 @@ void Sprite::getBounds(const Sprite* targetCoordinateSpace, float* minx, float* 
 }
 #endif
 
-GLenum blendFactor2GLenum(Sprite::BlendFactor blendFactor)
+GLenum blendFactor2GLenum(GSprite::BlendFactor blendFactor)
 {
 	switch (blendFactor)
 	{
-		case Sprite::ZERO:
+		case GSprite::ZERO:
 		   return GL_ZERO;
-		case Sprite::ONE:
+		case GSprite::ONE:
 		   return GL_ONE;
-		case Sprite::SRC_COLOR:
+		case GSprite::SRC_COLOR:
 		   return GL_SRC_COLOR;
-		case Sprite::ONE_MINUS_SRC_COLOR:
+		case GSprite::ONE_MINUS_SRC_COLOR:
 		   return GL_ONE_MINUS_SRC_COLOR;
-		case Sprite::DST_COLOR:
+		case GSprite::DST_COLOR:
 		   return GL_DST_COLOR;
-		case Sprite::ONE_MINUS_DST_COLOR:
+		case GSprite::ONE_MINUS_DST_COLOR:
 		   return GL_ONE_MINUS_DST_COLOR;
-		case Sprite::SRC_ALPHA:
+		case GSprite::SRC_ALPHA:
 		   return GL_SRC_ALPHA;
-		case Sprite::ONE_MINUS_SRC_ALPHA:
+		case GSprite::ONE_MINUS_SRC_ALPHA:
 		   return GL_ONE_MINUS_SRC_ALPHA;
-		case Sprite::DST_ALPHA:
+		case GSprite::DST_ALPHA:
 		   return GL_DST_ALPHA;
-		case Sprite::ONE_MINUS_DST_ALPHA:
+		case GSprite::ONE_MINUS_DST_ALPHA:
 		   return GL_ONE_MINUS_DST_ALPHA;
 		//case Sprite::CONSTANT_COLOR:
 		//   return GL_CONSTANT_COLOR;
@@ -975,27 +975,27 @@ GLenum blendFactor2GLenum(Sprite::BlendFactor blendFactor)
 		//   return GL_CONSTANT_ALPHA;
 		//case Sprite::ONE_MINUS_CONSTANT_ALPHA:
 		//   return GL_ONE_MINUS_CONSTANT_ALPHA;
-		case Sprite::SRC_ALPHA_SATURATE:
+		case GSprite::SRC_ALPHA_SATURATE:
 		   return GL_SRC_ALPHA_SATURATE;
 	}
 
 	return GL_ZERO;
 }
 
-void Sprite::setBlendFunc(BlendFactor sfactor, BlendFactor dfactor)
+void GSprite::setBlendFunc(BlendFactor sfactor, BlendFactor dfactor)
 {
 	sfactor_ = blendFactor2GLenum(sfactor);
 	dfactor_ = blendFactor2GLenum(dfactor);
 }
 
 
-void Sprite::clearBlendFunc()
+void GSprite::clearBlendFunc()
 {
 	sfactor_ = -1;
 	dfactor_ = -1;
 }
 
-void Sprite::setColorTransform(const ColorTransform& colorTransform)
+void GSprite::setColorTransform(const ColorTransform& colorTransform)
 {
 	if (colorTransform_ == 0)
 		colorTransform_ = new ColorTransform();
@@ -1003,12 +1003,12 @@ void Sprite::setColorTransform(const ColorTransform& colorTransform)
 	*colorTransform_ = colorTransform;
 }
 
-void Sprite::setAlpha(float alpha)
+void GSprite::setAlpha(float alpha)
 {
 	alpha_ = alpha;
 }
 
-void Sprite::eventListenersChanged()
+void GSprite::eventListenersChanged()
 {
     Stage *stage = getStage();
     if (stage)
@@ -1020,19 +1020,19 @@ void Sprite::eventListenersChanged()
 		allSpritesWithListeners_.erase(this);
 }
 
-void Sprite::set(const char* param, float value, GStatus* status)
+void GSprite::set(const char* param, float value, GStatus* status)
 {
 	int id = StringId::instance().id(param);
 	set(id, value, status);
 }
 
-float Sprite::get(const char* param, GStatus* status)
+float GSprite::get(const char* param, GStatus* status)
 {
 	int id = StringId::instance().id(param);
 	return get(id, status);
 }
 
-void Sprite::set(int param, float value, GStatus* status)
+void GSprite::set(int param, float value, GStatus* status)
 {
 	switch (param)
 	{
@@ -1076,7 +1076,7 @@ void Sprite::set(int param, float value, GStatus* status)
 	}
 }
 
-float Sprite::get(int param, GStatus* status)
+float GSprite::get(int param, GStatus* status)
 {
 	switch (param)
 	{
@@ -1109,7 +1109,7 @@ float Sprite::get(int param, GStatus* status)
 }
 
 
-void Sprite::setRedMultiplier(float redMultiplier)
+void GSprite::setRedMultiplier(float redMultiplier)
 {
     if (colorTransform_ == NULL)
         colorTransform_ = new ColorTransform();
@@ -1117,7 +1117,7 @@ void Sprite::setRedMultiplier(float redMultiplier)
     colorTransform_->setRedMultiplier(redMultiplier);
 }
 
-void Sprite::setGreenMultiplier(float greenMultiplier)
+void GSprite::setGreenMultiplier(float greenMultiplier)
 {
     if (colorTransform_ == NULL)
         colorTransform_ = new ColorTransform();
@@ -1125,7 +1125,7 @@ void Sprite::setGreenMultiplier(float greenMultiplier)
     colorTransform_->setGreenMultiplier(greenMultiplier);
 }
 
-void Sprite::setBlueMultiplier(float blueMultiplier)
+void GSprite::setBlueMultiplier(float blueMultiplier)
 {
     if (colorTransform_ == NULL)
         colorTransform_ = new ColorTransform();
@@ -1133,7 +1133,7 @@ void Sprite::setBlueMultiplier(float blueMultiplier)
     colorTransform_->setBlueMultiplier(blueMultiplier);
 }
 
-void Sprite::setAlphaMultiplier(float alphaMultiplier)
+void GSprite::setAlphaMultiplier(float alphaMultiplier)
 {
     if (colorTransform_ == NULL)
         colorTransform_ = new ColorTransform();
@@ -1141,7 +1141,7 @@ void Sprite::setAlphaMultiplier(float alphaMultiplier)
     colorTransform_->setAlphaMultiplier(alphaMultiplier);
 }
 
-float Sprite::getRedMultiplier() const
+float GSprite::getRedMultiplier() const
 {
     if (colorTransform_ == NULL)
         colorTransform_ = new ColorTransform();
@@ -1149,7 +1149,7 @@ float Sprite::getRedMultiplier() const
     return colorTransform_->redMultiplier();
 }
 
-float Sprite::getGreenMultiplier() const
+float GSprite::getGreenMultiplier() const
 {
     if (colorTransform_ == NULL)
         colorTransform_ = new ColorTransform();
@@ -1157,7 +1157,7 @@ float Sprite::getGreenMultiplier() const
     return colorTransform_->greenMultiplier();
 }
 
-float Sprite::getBlueMultiplier() const
+float GSprite::getBlueMultiplier() const
 {
     if (colorTransform_ == NULL)
         colorTransform_ = new ColorTransform();
@@ -1165,7 +1165,7 @@ float Sprite::getBlueMultiplier() const
     return colorTransform_->blueMultiplier();
 }
 
-float Sprite::getAlphaMultiplier() const
+float GSprite::getAlphaMultiplier() const
 {
     if (colorTransform_ == NULL)
         colorTransform_ = new ColorTransform();

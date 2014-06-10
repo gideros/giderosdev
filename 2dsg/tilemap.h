@@ -6,7 +6,7 @@
 
 class Application;
 
-class TileMap : public Sprite
+class TileMap : public GSprite
 {
 public:
 	static const int EMPTY_TILE = -2147483647 - 1;

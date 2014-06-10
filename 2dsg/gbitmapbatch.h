@@ -7,7 +7,7 @@ class Application;
 class BitmapData;
 class TextureBase;
 
-class GBitmapArray : public Sprite
+class GBitmapArray : public GSprite
 {
 public:
     GBitmapArray(Application *application, BitmapData *bitmapdata);

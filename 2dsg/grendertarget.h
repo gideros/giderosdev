@@ -4,7 +4,7 @@
 #include "glcommon.h"
 
 class Application;
-class Sprite;
+class GSprite;
 
 class GRenderTarget : public TextureBase
 {
@@ -14,7 +14,7 @@ public:
 
     void clear(unsigned int color, float a);
 
-    void draw(const Sprite *sprite);
+    void draw(const GSprite *sprite);
 
 private:
     g_id tempTexture_;

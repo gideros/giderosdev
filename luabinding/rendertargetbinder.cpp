@@ -59,7 +59,7 @@ int RenderTargetBinder::draw(lua_State *L)
     Binder binder(L);
 
     GRenderTarget *renderTarget = static_cast<GRenderTarget*>(binder.getInstance("RenderTarget", 1));
-    Sprite *sprite = static_cast<Sprite*>(binder.getInstance("Sprite", 2));
+    GSprite *sprite = static_cast<GSprite*>(binder.getInstance("Sprite", 2));
 
     renderTarget->draw(sprite);
 

@@ -8,10 +8,10 @@
 
 class Application;
 
-class Stage : public Sprite
+class Stage : public GSprite
 {
 public:
-    Stage(Application* application) : Sprite(application)
+    Stage(Application* application) : GSprite(application)
 	{
 		startTime_ = -1;
         isSpritesWithListenersDirty_ = true;
@@ -53,7 +53,7 @@ private:
 
 private:
     void populateSpritesWithListeners();
-    std::vector<Sprite*> spritesWithListeners_;
+    std::vector<GSprite*> spritesWithListeners_;
     bool isSpritesWithListenersDirty_;
     void dispatchToSpritesWithListeners(Event *event);
 };

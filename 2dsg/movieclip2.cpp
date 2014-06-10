@@ -950,7 +950,7 @@ Parameter::Parameter(const char* strparam, float start, float end, const char* t
 	tweenFunction = getTweenFunction((TweenType)StringId::instance().id(tweenType));
 }
 
-MovieClip::MovieClip(Type type, Application *application) : Sprite(application)
+MovieClip::MovieClip(Type type, Application *application) : GSprite(application)
 {
     type_ = type;
 }
@@ -961,7 +961,7 @@ MovieClip::~MovieClip()
 		frames_[i].sprite->unref();
 }
 
-void MovieClip::addFrame(int start, int end, Sprite* sprite, const std::vector<Parameter>& parameters, GStatus* status/* = NULL*/)
+void MovieClip::addFrame(int start, int end, GSprite* sprite, const std::vector<Parameter>& parameters, GStatus* status/* = NULL*/)
 {
     switch (type_)
     {
@@ -1160,7 +1160,7 @@ void MovieClip::interpolateParameters()
 		const std::vector<Frame*>& frames = iter->second;
 		for (std::size_t i = 0; i < frames.size(); ++i)
 		{
-			Sprite* sprite = frames[i]->sprite;
+			GSprite* sprite = frames[i]->sprite;
 
 			int s = frames[i]->start;
 			int e = frames[i]->end;
@@ -1224,9 +1224,9 @@ void MovieClip::clearAction(int frame)
 	actions_.erase(frame);
 }
 
-void MovieClip::addChild2(Sprite* sprite)
+void MovieClip::addChild2(GSprite* sprite)
 {
-	std::map<Sprite*, int>::iterator iter = counts_.find(sprite);
+	std::map<GSprite*, int>::iterator iter = counts_.find(sprite);
 
 	if (iter == counts_.end() || iter->second == 0)
 	{
@@ -1243,7 +1243,7 @@ void MovieClip::addChild2(Sprite* sprite)
 	}
 }
 
-void MovieClip::removeChild2(Sprite* sprite)
+void MovieClip::removeChild2(GSprite* sprite)
 {
 	if (--counts_[sprite] == 0)
 	{
@@ -1270,7 +1270,7 @@ void MovieClip::extraBounds(float* pminx, float* pminy, float* pmaxx, float* pma
 
 	for (size_t i = 0; i < currentSprites_.size(); ++i)
 	{
-		Sprite* sprite = currentSprites_[i];
+		GSprite* sprite = currentSprites_[i];
 
 		// get object bounds
 		float ominx, ominy, omaxx, omaxy;

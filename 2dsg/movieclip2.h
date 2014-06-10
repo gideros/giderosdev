@@ -71,7 +71,7 @@ struct Parameter
 	double (*tweenFunction)(double);
 };
 
-class MovieClip : public Sprite
+class MovieClip : public GSprite
 {
 public:
     enum Type
@@ -84,7 +84,7 @@ public:
 	virtual ~MovieClip();
 
 	// start >= 1 && end >= 1 && start <= end
-	void addFrame(int start, int end, Sprite* sprite, const std::vector<Parameter>& parameters, GStatus* status = NULL);
+	void addFrame(int start, int end, GSprite* sprite, const std::vector<Parameter>& parameters, GStatus* status = NULL);
 
 	void setStopAction(int frame);
 	void setGotoAction(int frame, int destframe);
@@ -119,7 +119,7 @@ private:
 	{
 		int start;
 		int end;
-		Sprite* sprite;
+		GSprite* sprite;
 		std::vector<Parameter> parameters;
 	};
 
@@ -130,11 +130,11 @@ private:
 
 	std::map<int, int> actions_;
 
-	std::map<Sprite*, int> counts_;
-	void addChild2(Sprite* sprite);
-	void removeChild2(Sprite* sprite);
+	std::map<GSprite*, int> counts_;
+	void addChild2(GSprite* sprite);
+	void removeChild2(GSprite* sprite);
 
-	std::vector<Sprite*> currentSprites_;
+	std::vector<GSprite*> currentSprites_;
 };
 
 #endif

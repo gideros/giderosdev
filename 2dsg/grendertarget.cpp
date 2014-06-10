@@ -54,7 +54,7 @@ void GRenderTarget::clear(unsigned int color, float a)
     glBindFramebuffer(GL_FRAMEBUFFER, oldFBO);
 }
 
-void GRenderTarget::draw(const Sprite *sprite)
+void GRenderTarget::draw(const GSprite *sprite)
 {
     GLint oldFBO = 0;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFBO);
@@ -78,7 +78,7 @@ void GRenderTarget::draw(const Sprite *sprite)
     glLoadIdentity();
 
     CurrentTransform currentTransform;
-    ((Sprite*)sprite)->draw(currentTransform, 0, 0, data->width, data->height);
+    ((GSprite*)sprite)->draw(currentTransform, 0, 0, data->width, data->height);
 
     glBindFramebuffer(GL_FRAMEBUFFER, oldFBO);
 }

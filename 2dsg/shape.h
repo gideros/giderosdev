@@ -7,7 +7,7 @@
 
 class Application;
 
-class Shape : public Sprite
+class Shape : public GSprite
 {
 public:
 	enum WindingRule

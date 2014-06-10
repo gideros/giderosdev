@@ -17,7 +17,7 @@ static lua_State *L = NULL;
 
 class b2WorldED;
 
-class b2DebugDraw : public Sprite, public b2Draw
+class b2DebugDraw : public GSprite, public b2Draw
 {
 public:
     b2DebugDraw(LuaApplication* application);
@@ -4712,7 +4712,7 @@ int Box2DBinder2::b2RopeJoint_getMaxLength(lua_State* L)
 
 
 b2DebugDraw::b2DebugDraw(LuaApplication* application) :
-    Sprite(application->getApplication()),
+    GSprite(application->getApplication()),
     world_(NULL),
     application_(application)
 {

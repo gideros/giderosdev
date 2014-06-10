@@ -14,25 +14,25 @@ typedef Matrix CurrentTransform;
 class Application;
 class Stage;
 
-class Sprite : public EventDispatcher
+class GSprite : public EventDispatcher
 {
 public:
-    Sprite(Application* application);
-	virtual ~Sprite();
+    GSprite(Application* application);
+    virtual ~GSprite();
 
     void draw(const CurrentTransform&, float sx, float sy, float ex, float ey);
 
-	void addChild(Sprite* sprite, GStatus* status = 0);
-	void removeChild(Sprite* child, GStatus* status = 0);
+    void addChild(GSprite* sprite, GStatus* status = 0);
+    void removeChild(GSprite* child, GStatus* status = 0);
 	void removeChild(int index, GStatus* status = 0);
-	bool contains(Sprite* sprite) const;
-	void replaceChild(Sprite* oldChild, Sprite* newChild);
-	bool canChildBeAdded(Sprite* sprite, GStatus* status = 0);
-	void addChildAt(Sprite* sprite, int index, GStatus* status = 0);
-	bool canChildBeAddedAt(Sprite* sprite, int index, GStatus* status = 0);
-	int getChildIndex(Sprite* sprite, GStatus* status = 0);
-	void setChildIndex(Sprite* child, int index, GStatus* status = 0);
-	void swapChildren(Sprite* child1, Sprite* child2, GStatus* status = 0);
+    bool contains(GSprite* sprite) const;
+    void replaceChild(GSprite* oldChild, GSprite* newChild);
+    bool canChildBeAdded(GSprite* sprite, GStatus* status = 0);
+    void addChildAt(GSprite* sprite, int index, GStatus* status = 0);
+    bool canChildBeAddedAt(GSprite* sprite, int index, GStatus* status = 0);
+    int getChildIndex(GSprite* sprite, GStatus* status = 0);
+    void setChildIndex(GSprite* child, int index, GStatus* status = 0);
+    void swapChildren(GSprite* child1, GSprite* child2, GStatus* status = 0);
 	void swapChildrenAt(int index1, int index2, GStatus* status = 0);
 	void removeChildAt(int index, GStatus* status = 0);
 	
@@ -47,14 +47,14 @@ public:
 		return (int)children_.size();
 	}
 
-	Sprite* child(int index) const
+    GSprite* child(int index) const
 	{
 		return children_[index];
 	}
 
-	Sprite* getChildAt(int index, GStatus* status = 0) const;
+    GSprite* getChildAt(int index, GStatus* status = 0) const;
 
-	Sprite* parent() const
+    GSprite* parent() const
 	{
 		return parent_;
 	}
@@ -200,12 +200,12 @@ public:
 		return false;
 	}
 
-	static const std::set<Sprite*>& allSprites()
+    static const std::set<GSprite*>& allSprites()
 	{
 		return allSprites_;
 	}
 
-    void getBounds(const Sprite* targetCoordinateSpace, float* minx, float* miny, float* maxx, float* maxy) const;
+    void getBounds(const GSprite* targetCoordinateSpace, float* minx, float* miny, float* maxx, float* maxy) const;
 
 	enum BlendFactor
 	{
@@ -278,9 +278,9 @@ private:
 
 	unsigned int sfactor_, dfactor_;
 
-	typedef std::vector<Sprite*> SpriteVector;
+    typedef std::vector<GSprite*> SpriteVector;
 	SpriteVector children_;
-	Sprite* parent_;
+    GSprite* parent_;
 
 	mutable ColorTransform* colorTransform_;
 	float alpha_;
@@ -289,8 +289,8 @@ private:
     virtual void doDraw(const CurrentTransform&, float sx, float sy, float ex, float ey);
 
 protected:
-	static std::set<Sprite*> allSprites_;
-	static std::set<Sprite*> allSpritesWithListeners_;
+    static std::set<GSprite*> allSprites_;
+    static std::set<GSprite*> allSpritesWithListeners_;
 
 protected:
 //	typedef std::list<GraphicsBase, Gideros::STLAllocator<GraphicsBase, StdAllocator> > GraphicsBaseList;
