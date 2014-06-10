@@ -6,7 +6,7 @@
 class Application;
 class GSprite;
 
-class GRenderTarget : public TextureBase
+class GRenderTarget : public GTextureBase
 {
 public:
     GRenderTarget(Application *application, int width, int height, Filter filter);

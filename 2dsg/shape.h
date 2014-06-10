@@ -23,7 +23,7 @@ public:
 
 	void clearFillStyle();
 	void setSolidFillStyle(unsigned int color, float alpha = 1.f);
-	void setTextureFillStyle(TextureBase* texture, const Matrix* matrix = NULL);
+	void setTextureFillStyle(GTextureBase* texture, const Matrix* matrix = NULL);
 //	void setLinearGradientFillStyle();
 //	void setRadialGradientFillStyle();
 
@@ -47,10 +47,10 @@ private:
 
 	FillType fillType_;
 	float fillr_, fillg_, fillb_, filla_;
-	TextureBase* texture_;
+	GTextureBase* texture_;
 	Matrix matrix_;
 
-	std::vector<TextureBase*> textures_;
+	std::vector<GTextureBase*> textures_;
 
 	float liner_, lineg_, lineb_, linea_;
 	float thickness_;

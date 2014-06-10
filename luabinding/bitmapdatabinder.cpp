@@ -22,7 +22,7 @@ int BitmapDataBinder::create(lua_State* L)
 
 	Binder binder(L);
 
-	TextureBase* textureBase = static_cast<TextureBase*>(binder.getInstance("TextureBase", 1));
+	GTextureBase* textureBase = static_cast<GTextureBase*>(binder.getInstance("TextureBase", 1));
 
 	GTextureRegion* bitmapData = 0;
 	if (lua_gettop(L) > 1)

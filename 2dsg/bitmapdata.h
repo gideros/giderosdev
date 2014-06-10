@@ -7,12 +7,12 @@
 class GTextureRegion : public GReferenced
 {
 public:
-    GTextureRegion(TextureBase* texture);
-    GTextureRegion(TextureBase* texture, int x, int y, int width, int height, int dx1 = 0, int dy1 = 0, int dx2 = 0, int dy2 = 0);
+    GTextureRegion(GTextureBase* texture);
+    GTextureRegion(GTextureBase* texture, int x, int y, int width, int height, int dx1 = 0, int dy1 = 0, int dx2 = 0, int dy2 = 0);
 
     virtual ~GTextureRegion();
 
-	TextureBase* texture() const
+	GTextureBase* texture() const
 	{
 		return texture_;
 	}
@@ -26,7 +26,7 @@ private:
     friend class GBitmap;
 	friend class TexturePack;
 
-	TextureBase* texture_;
+	GTextureBase* texture_;
 	int x, y;
 	int width, height;
 	int dx1, dy1;

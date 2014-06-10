@@ -4,7 +4,7 @@
 
 TileMap::TileMap(Application* application,
 				 int width, int height,
-				 TextureBase* texture, 
+				 GTextureBase* texture, 
 				 int tilewidth, int tileheight,
 				 int spacingx, int spacingy,
 				 int marginx, int marginy,

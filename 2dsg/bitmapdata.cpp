@@ -1,7 +1,7 @@
 #include "bitmapdata.h"
 #include <math.h>
 
-GTextureRegion::GTextureRegion(TextureBase* texture)
+GTextureRegion::GTextureRegion(GTextureBase* texture)
 {
 	//printf("TextureRegion()\n");
 	texture_ = texture;
@@ -19,7 +19,7 @@ GTextureRegion::GTextureRegion(TextureBase* texture)
 	initUV();
 }
 
-GTextureRegion::GTextureRegion(TextureBase* texture, int x, int y, int width, int height, int dx1/* = 0*/, int dy1/* = 0*/, int dx2/* = 0*/, int dy2/* = 0*/) :
+GTextureRegion::GTextureRegion(GTextureBase* texture, int x, int y, int width, int height, int dx1/* = 0*/, int dy1/* = 0*/, int dx2/* = 0*/, int dy2/* = 0*/) :
 	x(x), y(y),
 	width(width), height(height),
 	dx1(dx1), dy1(dy1),

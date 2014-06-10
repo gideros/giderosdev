@@ -209,7 +209,7 @@ void GMesh::clearTextureCoordinateArray()
     textureCoordinates_.clear();
 }
 
-void GMesh::setTexture(TextureBase *texture)
+void GMesh::setTexture(GTextureBase *texture)
 {
     if (texture)
         texture->ref();

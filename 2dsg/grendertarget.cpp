@@ -6,7 +6,7 @@
 int GRenderTarget::qualcommFix_ = -1;
 
 GRenderTarget::GRenderTarget(Application *application, int width, int height, Filter filter) :
-    TextureBase(application)
+    GTextureBase(application)
 {
     TextureParameters parameters;
     parameters.filter = filter;

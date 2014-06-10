@@ -12,7 +12,7 @@ GBitmapArray::GBitmapArray(Application *application, GTextureRegion *bitmapdata)
     anchory_ = 0;
 }
 
-GBitmapArray::GBitmapArray(Application *application, TextureBase *texturebase) : GSprite(application)
+GBitmapArray::GBitmapArray(Application *application, GTextureBase *texturebase) : GSprite(application)
 {
     texturebase_ = texturebase;
     texturebase_->ref();

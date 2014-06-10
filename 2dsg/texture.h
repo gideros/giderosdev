@@ -3,7 +3,7 @@
 
 #include "texturebase.h"
 
-class Texture : public TextureBase
+class Texture : public GTextureBase
 {
 public:
 	// can throw GiderosException

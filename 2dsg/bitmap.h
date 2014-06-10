@@ -25,7 +25,7 @@ public:
         updateBounds();
 	}
 
-    GBitmap(Application *application, TextureBase* texturebase) : GSprite(application)
+    GBitmap(Application *application, GTextureBase* texturebase) : GSprite(application)
 	{
 		texturebase_ = texturebase;
 		texturebase_->ref();
@@ -55,7 +55,7 @@ public:
 	void getAnchorPoint(float* x, float* y) const;
 
     void setTextureRegion(GTextureRegion *bitmapdata);
-    void setTexture(TextureBase *texturebase);
+    void setTexture(GTextureBase *texturebase);
 
 private:
     virtual void doDraw(const CurrentTransform&, float sx, float sy, float ex, float ey);
@@ -64,7 +64,7 @@ private:
 	virtual void extraBounds(float* minx, float* miny, float* maxx, float* maxy) const;
 
 	GTextureRegion* bitmapdata_;
-	TextureBase* texturebase_;
+	GTextureBase* texturebase_;
 
 	void setCoords();
 	float anchorx_, anchory_;

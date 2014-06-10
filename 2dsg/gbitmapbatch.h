@@ -5,17 +5,17 @@
 
 class Application;
 class GTextureRegion;
-class TextureBase;
+class GTextureBase;
 
 class GBitmapArray : public GSprite
 {
 public:
     GBitmapArray(Application *application, GTextureRegion *bitmapdata);
-    GBitmapArray(Application *application, TextureBase *texturebase);
+    GBitmapArray(Application *application, GTextureBase *texturebase);
     virtual ~GBitmapArray();
 
     void setTextureRegion(GTextureRegion *bitmapdata);
-    void setTexture(TextureBase *texturebase);
+    void setTexture(GTextureBase *texturebase);
 
     void setAnchorPoint(float x, float y);
     void getAnchorPoint(float *x, float *y) const;
@@ -45,7 +45,7 @@ private:
 
 private:
     GTextureRegion  *bitmapdata_;
-    TextureBase *texturebase_;
+    GTextureBase *texturebase_;
 
     float anchorx_, anchory_;
 };

@@ -37,7 +37,7 @@ int TextureBaseBinder::getWidth(lua_State* L)
 	StackChecker checker(L, "TextureBaseBinder::getWidth", 1);
 	
 	Binder binder(L);
-	TextureBase* textureBase = static_cast<TextureBase*>(binder.getInstance("TextureBase"));
+	GTextureBase* textureBase = static_cast<GTextureBase*>(binder.getInstance("TextureBase"));
 
 	lua_pushinteger(L, textureBase->data->baseWidth);
 
@@ -49,7 +49,7 @@ int TextureBaseBinder::getHeight(lua_State* L)
 	StackChecker checker(L, "TextureBaseBinder::getHeight", 1);
 	
 	Binder binder(L);
-	TextureBase* textureBase = static_cast<TextureBase*>(binder.getInstance("TextureBase"));
+	GTextureBase* textureBase = static_cast<GTextureBase*>(binder.getInstance("TextureBase"));
 
 	lua_pushinteger(L, textureBase->data->baseHeight);
 

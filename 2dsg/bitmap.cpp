@@ -148,7 +148,7 @@ void GBitmap::getAnchorPoint(float* x, float* y) const
 void GBitmap::setTextureRegion(GTextureRegion *bitmapdata)
 {
     GTextureRegion *originalbitmapdata = bitmapdata_;
-    TextureBase *originaltexturebase = texturebase_;
+    GTextureBase *originaltexturebase = texturebase_;
 
     bitmapdata_ = bitmapdata;
     bitmapdata_->ref();
@@ -162,10 +162,10 @@ void GBitmap::setTextureRegion(GTextureRegion *bitmapdata)
         originaltexturebase->unref();
 }
 
-void GBitmap::setTexture(TextureBase *texturebase)
+void GBitmap::setTexture(GTextureBase *texturebase)
 {
     GTextureRegion *originalbitmapdata = bitmapdata_;
-    TextureBase *originaltexturebase = texturebase_;
+    GTextureBase *originaltexturebase = texturebase_;
 
     bitmapdata_ = NULL;
     texturebase_ = texturebase;

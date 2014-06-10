@@ -38,7 +38,7 @@ int TileMapBinder::create(lua_State* L)
 	
 	int width = luaL_checkinteger(L, 1);
 	int height = luaL_checkinteger(L, 2);
-	TextureBase* texturebase = static_cast<TextureBase*>(binder.getInstance("TextureBase", 3));	
+	GTextureBase* texturebase = static_cast<GTextureBase*>(binder.getInstance("TextureBase", 3));	
 	int tilewidth = luaL_checkinteger(L, 4);
 	int tileheight = luaL_checkinteger(L, 5);
 	int spacingx = luaL_optinteger(L, 6, 0);

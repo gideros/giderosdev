@@ -1,7 +1,7 @@
 #include "texturebase.h"
 #include "application.h"
 
-TextureBase::TextureBase(Application* application) : application_(application)
+GTextureBase::GTextureBase(Application* application) : application_(application)
 {
 	data = NULL;
 	sizescalex = 1;
@@ -10,7 +10,7 @@ TextureBase::TextureBase(Application* application) : application_(application)
 	uvscaley = 1;
 }
 
-TextureBase::TextureBase(	Application* application,
+GTextureBase::GTextureBase(	Application* application,
                             const char* filename, Filter filter, Wrap wrap, Format format,
 							bool maketransparent/* = false*/, unsigned int transparentcolor/* = 0x00000000*/) :
 	application_(application)
@@ -30,7 +30,7 @@ TextureBase::TextureBase(	Application* application,
     uvscaley = (float)data->height / (float)data->baseHeight;
 }
 
-TextureBase::~TextureBase()
+GTextureBase::~GTextureBase()
 {
 	if (data)
 		application_->getTextureManager()->destroyTexture(data);

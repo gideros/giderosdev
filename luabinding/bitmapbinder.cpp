@@ -30,7 +30,7 @@ int BitmapBinder::create(lua_State* L)
 
 	if (binder.isInstanceOf("TextureBase", 1))
 	{
-		TextureBase* textureBase = static_cast<TextureBase*>(binder.getInstance("TextureBase", 1));
+		GTextureBase* textureBase = static_cast<GTextureBase*>(binder.getInstance("TextureBase", 1));
 
         GBitmap* bitmap = new GBitmap(application->getApplication(), textureBase);
 		binder.pushInstance("Bitmap", bitmap);
@@ -105,7 +105,7 @@ int BitmapBinder::setTexture(lua_State *L)
     Binder binder(L);
 
     GBitmap *bitmap = static_cast<GBitmap*>(binder.getInstance("Bitmap", 1));
-    TextureBase *textureBase = static_cast<TextureBase*>(binder.getInstance("TextureBase", 2));
+    GTextureBase *textureBase = static_cast<GTextureBase*>(binder.getInstance("TextureBase", 2));
     bitmap->setTexture(textureBase);
 
     return 0;

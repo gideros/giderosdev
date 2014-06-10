@@ -620,7 +620,7 @@ int MeshBinder::setTexture(lua_State *L)
 {
     Binder binder(L);
     GMesh *mesh = static_cast<GMesh*>(binder.getInstance("Mesh", 1));
-    TextureBase* textureBase = static_cast<TextureBase*>(binder.getInstance("TextureBase", 2));
+    GTextureBase* textureBase = static_cast<GTextureBase*>(binder.getInstance("TextureBase", 2));
 
     mesh->setTexture(textureBase);
 

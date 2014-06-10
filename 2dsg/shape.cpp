@@ -245,7 +245,7 @@ static void createSolidPolygon(	float r, float g, float b, float a,
 	createGraphicsBase(contours, result, evenodd);
 	result.setColor(r, g, b, a);
 }
-static void createTexturePolygon(	TextureBase* texture, const Matrix& matrix,
+static void createTexturePolygon(	GTextureBase* texture, const Matrix& matrix,
 									const std::vector<std::vector<Point2f> > & contours,
 									bool evenodd,
 									GraphicsBase& result)
@@ -283,7 +283,7 @@ void Shape::setSolidFillStyle(unsigned int color, float alpha)
 	filla_ = alpha;
 }
 
-void Shape::setTextureFillStyle(TextureBase* texture, const Matrix* matrix)
+void Shape::setTextureFillStyle(GTextureBase* texture, const Matrix* matrix)
 {
 	fillType_ = eTexture;
 

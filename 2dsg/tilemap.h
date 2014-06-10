@@ -17,7 +17,7 @@ public:
 
 	TileMap(Application* application,
 			int width, int height,
-			TextureBase* texture, 
+			GTextureBase* texture, 
 			int tilewidth, int tileheight,
 			int spacingx, int spacingy,
 			int marginx, int marginy,
@@ -45,7 +45,7 @@ private:
 	void shiftdown();
 
 	int width_, height_;
-	TextureBase* texture_; 
+	GTextureBase* texture_; 
 	int tilewidth_, tileheight_;
 	int spacingx_, spacingy_;
 	int marginx_, marginy_;

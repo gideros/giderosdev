@@ -13,7 +13,7 @@
 TexturePack::TexturePack(Application* application,
                          const char* texturelistfile, const char* imagefile, Filter filter, Wrap wrap, Format format,
 						 bool maketransparent/* = false*/, unsigned int transparentcolor/* = 0x00000000*/) :
-    TextureBase(application, imagefile, filter, wrap, format, maketransparent, transparentcolor)
+    GTextureBase(application, imagefile, filter, wrap, format, maketransparent, transparentcolor)
 {
     float scale;
     const char *suffix = application->getImageSuffix(imagefile, &scale);
@@ -46,7 +46,7 @@ TexturePack::TexturePack(Application* application,
 TexturePack::TexturePack(Application* application,
                          const char** filenames, int padding, Filter filter, Wrap wrap, Format format,
 						 bool maketransparent/* = false*/, unsigned int transparentcolor/* = 0x00000000*/) :
-	TextureBase(application)
+	GTextureBase(application)
 {
 	std::vector<Dib> dibs;
 

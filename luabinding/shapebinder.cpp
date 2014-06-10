@@ -93,7 +93,7 @@ int ShapeBinder::setFillStyle(lua_State* L)
 	}
 	else if (strcmp(type, TEXTURE) == 0)
 	{
-		TextureBase* texture = static_cast<TextureBase*>(binder.getInstance("TextureBase", 3));
+		GTextureBase* texture = static_cast<GTextureBase*>(binder.getInstance("TextureBase", 3));
 		Matrix* matrix = NULL;
 		if (!lua_isnone(L, 4))
 			matrix = static_cast<Matrix*>(binder.getInstance("Matrix", 4));

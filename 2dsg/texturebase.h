@@ -4,7 +4,7 @@
 #include "texturemanager.h"
 #include "refptr.h"
 
-class TextureBase : public GReferenced
+class GTextureBase : public GReferenced
 {
 public:
 	float sizescalex;
@@ -15,12 +15,12 @@ public:
 	TextureData* data;
 
 protected:
-	TextureBase(Application* application);
-	TextureBase(Application* application,
+    GTextureBase(Application* application);
+    GTextureBase(Application* application,
                 const char* filename, Filter filter, Wrap wrap, Format format,
 				bool maketransparent = false, unsigned int transparentcolor = 0x00000000);
 
-	virtual ~TextureBase();
+    virtual ~GTextureBase();
 
 private:
 	Application* application_;

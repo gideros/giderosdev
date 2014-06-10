@@ -7,7 +7,7 @@
 
 class GTextureRegion;
 
-class TexturePack : public TextureBase
+class TexturePack : public GTextureBase
 {
 public:
 	// can throw GiderosException

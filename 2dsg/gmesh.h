@@ -43,7 +43,7 @@ public:
     void getColor(int i, unsigned int *color, float *alpha) const;
     void getTextureCoordinate(int i, float *u, float *v) const;
 
-    void setTexture(TextureBase *texture);
+    void setTexture(GTextureBase *texture);
     void clearTexture();
 
 private:
@@ -63,7 +63,7 @@ private:
     std::vector<float> textureCoordinates_;
     std::vector<float> originalTextureCoordinates_;
 
-    TextureBase *texture_;
+    GTextureBase *texture_;
 
     float sx_, sy_;
 
