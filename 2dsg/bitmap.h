@@ -5,10 +5,10 @@
 #include "bitmapdata.h"
 #include "graphicsbase.h"
 
-class Bitmap : public GSprite
+class GBitmap : public GSprite
 {
 public:
-    Bitmap(Application *application, GTextureRegion* bitmapdata) : GSprite(application)
+    GBitmap(Application *application, GTextureRegion* bitmapdata) : GSprite(application)
 	{
 		//printf("Bitmap()\n");
 		bitmapdata_ = bitmapdata;
@@ -25,7 +25,7 @@ public:
         updateBounds();
 	}
 
-    Bitmap(Application *application, TextureBase* texturebase) : GSprite(application)
+    GBitmap(Application *application, TextureBase* texturebase) : GSprite(application)
 	{
 		texturebase_ = texturebase;
 		texturebase_->ref();
@@ -41,7 +41,7 @@ public:
         updateBounds();
     }
 
-	virtual ~Bitmap()
+    virtual ~GBitmap()
 	{
 		//printf("~Bitmap()\n");
 		if (bitmapdata_ != NULL)

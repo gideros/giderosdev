@@ -23,7 +23,7 @@ public:
     void getRegion(int *x, int *y, int *width, int *height, int *dx1, int *dy1, int *dx2, int *dy2);
 
 private:
-	friend class Bitmap;
+    friend class GBitmap;
 	friend class TexturePack;
 
 	TextureBase* texture_;
