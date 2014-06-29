@@ -4,9 +4,9 @@
 #include <cassert>
 #include <stack>
 #include "color.h"
-#include "blendfunc.h"
 #include "stage.h"
 #include <application.h>
+#include <ggl.h>
 
 std::set<GSprite*> GSprite::allSprites_;
 std::set<GSprite*> GSprite::allSpritesWithListeners_;
@@ -185,7 +185,7 @@ void GSprite::draw(const CurrentTransform& transform, float sx, float sy, float 
 			if (sprite->colorTransform_ != 0 || sprite->alpha_ != 1)
 				glPopColor();
 			if (sprite->sfactor_ != -1)
-				glPopBlendFunc();
+                application_->popBlendFunc();
 			continue;
 		}
 
@@ -215,8 +215,8 @@ void GSprite::draw(const CurrentTransform& transform, float sx, float sy, float 
 
 		if (sprite->sfactor_ != -1)
 		{
-			glPushBlendFunc();
-			glSetBlendFunc(sprite->sfactor_, sprite->dfactor_);
+            application_->pushBlendFunc();
+            application_->setBlendFunc(sprite->sfactor_, sprite->dfactor_);
 		}
 
         sprite->doDraw(sprite->worldTransform_, sx, sy, ex, ey);

@@ -40,6 +40,9 @@ SOURCES += \
     src/gaudio-stream-openal.cpp \
     src/gaudio-loader-wav.cpp \
     src/gaudio-loader-mp3.cpp
+
+SOURCES += src/ggl-opengl.cpp
+
 HEADERS += src/ggaudiomanager.h
 
 HEADERS += include/gexport.h
@@ -57,7 +60,8 @@ HEADERS += \
     include/gui.h \
     include/gapplication.h \
     include/gaudio.h \
-    include/ghttp.h
+    include/ghttp.h \
+    include/ggl.h
 
 HEADERS += \
     include/qt/gui-qt.h \

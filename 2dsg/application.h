@@ -12,6 +12,8 @@
 #include <ginput.h>
 #include <timercontainer.h>
 #include <refptr.h>
+#include <ggl.h>
+#include <stack>
 
 
 class Font;
@@ -118,6 +120,10 @@ public:
     void deleteAutounrefPool(void *);
     void autounref(GReferenced *referenced);
 
+    void pushBlendFunc();
+    void popBlendFunc();
+    void setBlendFunc(GLenum sfactor, GLenum dfactor);
+
 private:
 	TextureManager textureManager_;
 	Stage* stage_;
@@ -178,6 +184,24 @@ private:
 
     std::vector<std::vector<GReferenced*>*> unrefPool_;
     std::vector<std::vector<GReferenced*>*> unrefPoolTrash_;
+
+    struct GBlendFunc
+    {
+        GBlendFunc() {}
+
+        GBlendFunc(GLenum sfactor, GLenum dfactor) :
+            sfactor(sfactor),
+            dfactor(dfactor)
+        {
+
+        }
+
+        GLenum sfactor;
+        GLenum dfactor;
+    };
+
+    std::stack<GBlendFunc> blendFuncStack_;
+    GBlendFunc currentBlendFunc_;
 };
 
 #endif

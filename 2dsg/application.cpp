@@ -14,6 +14,10 @@
 #include <memory.h>
 #include <gstdio.h>
 
+#ifndef PREMULTIPLIED_ALPHA
+#error PREMULTIPLIED_ALPHA is not defined
+#endif
+
 #if 0 && defined(QT_CORE_LIB)
 #include <QDebug>
 #endif
@@ -79,6 +83,12 @@ Application::Application() :
 	defaultFont_ = NULL;
 
 	scale_ = 1;
+
+#if PREMULTIPLIED_ALPHA
+    currentBlendFunc_ = GBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+#else
+    currentBlendFunc_ = GBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+#endif
 }
 
 Application::~Application()
@@ -843,5 +853,27 @@ void Application::deleteAutounrefPool(void *pool)
         if (pool == pool2)
             break;
     }
+}
+
+
+void Application::pushBlendFunc()
+{
+    blendFuncStack_.push(currentBlendFunc_);
+}
+
+void Application::popBlendFunc()
+{
+    currentBlendFunc_ = blendFuncStack_.top();
+    blendFuncStack_.pop();
+
+    gglBlendFunc(currentBlendFunc_.sfactor, currentBlendFunc_.dfactor);
+}
+
+void Application::setBlendFunc(GLenum sfactor, GLenum dfactor)
+{
+    currentBlendFunc_.sfactor = sfactor;
+    currentBlendFunc_.dfactor = dfactor;
+
+    gglBlendFunc(currentBlendFunc_.sfactor, currentBlendFunc_.dfactor);
 }
 
