@@ -744,10 +744,10 @@ int SpriteBinder::setColorTransform(lua_State* L)
 	lua_Number blueMultiplier = luaL_optnumber(L, 4, 1.0);
 	lua_Number alphaMultiplier = luaL_optnumber(L, 5, 1.0);
 
-	sprite->setColorTransform(ColorTransform(redMultiplier,
-											 greenMultiplier,
-											 blueMultiplier,
-											 alphaMultiplier));
+    sprite->setColorTransform(GColorTransform(redMultiplier,
+                                              greenMultiplier,
+                                              blueMultiplier,
+                                              alphaMultiplier));
 
 	return 0;
 

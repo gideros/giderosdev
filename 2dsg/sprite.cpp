@@ -29,8 +29,7 @@ GSprite::GSprite(Application* application) :
 
 GSprite::~GSprite()
 {
-	delete colorTransform_;
-//	delete graphics_;
+    delete colorTransform_;
 	
 	for (std::size_t i = 0; i < children_.size(); ++i)
 		children_[i]->unref();
@@ -181,7 +180,7 @@ void GSprite::draw(const CurrentTransform& transform, float sx, float sy, float 
 
 		if (pop == true)
 		{
-			if (sprite->colorTransform_ != 0 || sprite->alpha_ != 1)
+            if (sprite->colorTransform_ != NULL || sprite->alpha_ != 1)
                 application_->popColor();
 			if (sprite->sfactor_ != -1)
                 application_->popBlendFunc();
@@ -994,10 +993,10 @@ void GSprite::clearBlendFunc()
 	dfactor_ = -1;
 }
 
-void GSprite::setColorTransform(const ColorTransform& colorTransform)
+void GSprite::setColorTransform(const GColorTransform &colorTransform)
 {
-	if (colorTransform_ == 0)
-		colorTransform_ = new ColorTransform();
+    if (colorTransform_ == NULL)
+        colorTransform_ = new GColorTransform();
 
 	*colorTransform_ = colorTransform;
 }
@@ -1111,7 +1110,7 @@ float GSprite::get(int param, GStatus* status)
 void GSprite::setRedMultiplier(float redMultiplier)
 {
     if (colorTransform_ == NULL)
-        colorTransform_ = new ColorTransform();
+        colorTransform_ = new GColorTransform();
 
     colorTransform_->setRedMultiplier(redMultiplier);
 }
@@ -1119,7 +1118,7 @@ void GSprite::setRedMultiplier(float redMultiplier)
 void GSprite::setGreenMultiplier(float greenMultiplier)
 {
     if (colorTransform_ == NULL)
-        colorTransform_ = new ColorTransform();
+        colorTransform_ = new GColorTransform();
 
     colorTransform_->setGreenMultiplier(greenMultiplier);
 }
@@ -1127,7 +1126,7 @@ void GSprite::setGreenMultiplier(float greenMultiplier)
 void GSprite::setBlueMultiplier(float blueMultiplier)
 {
     if (colorTransform_ == NULL)
-        colorTransform_ = new ColorTransform();
+        colorTransform_ = new GColorTransform();
 
     colorTransform_->setBlueMultiplier(blueMultiplier);
 }
@@ -1135,7 +1134,7 @@ void GSprite::setBlueMultiplier(float blueMultiplier)
 void GSprite::setAlphaMultiplier(float alphaMultiplier)
 {
     if (colorTransform_ == NULL)
-        colorTransform_ = new ColorTransform();
+        colorTransform_ = new GColorTransform();
 
     colorTransform_->setAlphaMultiplier(alphaMultiplier);
 }
@@ -1143,7 +1142,7 @@ void GSprite::setAlphaMultiplier(float alphaMultiplier)
 float GSprite::getRedMultiplier() const
 {
     if (colorTransform_ == NULL)
-        colorTransform_ = new ColorTransform();
+        colorTransform_ = new GColorTransform();
 
     return colorTransform_->redMultiplier();
 }
@@ -1151,7 +1150,7 @@ float GSprite::getRedMultiplier() const
 float GSprite::getGreenMultiplier() const
 {
     if (colorTransform_ == NULL)
-        colorTransform_ = new ColorTransform();
+        colorTransform_ = new GColorTransform();
 
     return colorTransform_->greenMultiplier();
 }
@@ -1159,7 +1158,7 @@ float GSprite::getGreenMultiplier() const
 float GSprite::getBlueMultiplier() const
 {
     if (colorTransform_ == NULL)
-        colorTransform_ = new ColorTransform();
+        colorTransform_ = new GColorTransform();
 
     return colorTransform_->blueMultiplier();
 }
@@ -1167,7 +1166,7 @@ float GSprite::getBlueMultiplier() const
 float GSprite::getAlphaMultiplier() const
 {
     if (colorTransform_ == NULL)
-        colorTransform_ = new ColorTransform();
+        colorTransform_ = new GColorTransform();
 
     return colorTransform_->alphaMultiplier();
 }

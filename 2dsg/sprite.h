@@ -59,15 +59,15 @@ public:
 		return parent_;
 	}
 
-	const ColorTransform& colorTransform() const
+    const GColorTransform &colorTransform() const
 	{
-		if (colorTransform_ == 0)
-			colorTransform_ = new ColorTransform();
-		
-		return *colorTransform_;
+        if (colorTransform_ == NULL)
+            colorTransform_ = new GColorTransform();
+
+        return *colorTransform_;
 	}
 
-	void setColorTransform(const ColorTransform& colorTransform);
+    void setColorTransform(const GColorTransform &colorTransform);
 
     void setRedMultiplier(float redMultiplier);
     void setGreenMultiplier(float greenMultiplier);
@@ -282,7 +282,7 @@ private:
 	SpriteVector children_;
     GSprite* parent_;
 
-	mutable ColorTransform* colorTransform_;
+    mutable GColorTransform *colorTransform_;
 	float alpha_;
 
 private:
