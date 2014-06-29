@@ -14,6 +14,10 @@
 #include <memory.h>
 #include <gstdio.h>
 
+#ifndef PREMULTIPLIED_ALPHA
+#error PREMULTIPLIED_ALPHA is not defined
+#endif
+
 #if 0 && defined(QT_CORE_LIB)
 #include <QDebug>
 #endif
@@ -79,10 +83,6 @@ Application::Application() :
 	defaultFont_ = NULL;
 
 	scale_ = 1;
-
-#ifndef PREMULTIPLIED_ALPHA
-#error PREMULTIPLIED_ALPHA is not defined
-#endif
 
 #if PREMULTIPLIED_ALPHA
     currentBlendFunc_ = GBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
@@ -266,6 +266,13 @@ void Application::renderScene(int deltaFrameCount)
 	resetBindTextureCount();
 	resetClientStateCount();
 	resetTexture2DStateCount();
+#endif
+
+    setColor(1, 1, 1, 1);
+#if PREMULTIPLIED_ALPHA
+    setBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+#else
+    setBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 #endif
 
     float ltx = this->getLogicalTranslateX();
@@ -882,10 +889,6 @@ void Application::setBlendFunc(GLenum sfactor, GLenum dfactor)
 
 static inline void s_setColor(float r, float g, float b, float a)
 {
-#ifndef PREMULTIPLIED_ALPHA
-#error PREMULTIPLIED_ALPHA is not defined
-#endif
-
 #if PREMULTIPLIED_ALPHA
     gglColor4f(r * a, g * a, b * a, a);
 #else
