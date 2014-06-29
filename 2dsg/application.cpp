@@ -880,7 +880,7 @@ void Application::setBlendFunc(GLenum sfactor, GLenum dfactor)
 }
 
 
-static inline void setColor(float r, float g, float b, float a)
+static inline void s_setColor(float r, float g, float b, float a)
 {
 #ifndef PREMULTIPLIED_ALPHA
 #error PREMULTIPLIED_ALPHA is not defined
@@ -903,7 +903,7 @@ void Application::popColor()
     currentColor_ = colorStack_.top();
     colorStack_.pop();
 
-    setColor(currentColor_.r, currentColor_.g, currentColor_.b, currentColor_.a);
+    s_setColor(currentColor_.r, currentColor_.g, currentColor_.b, currentColor_.a);
 }
 
 void Application::multColor(float r, float g, float b, float a)
@@ -913,7 +913,7 @@ void Application::multColor(float r, float g, float b, float a)
     currentColor_.b *= b;
     currentColor_.a *= a;
 
-    setColor(currentColor_.r, currentColor_.g, currentColor_.b, currentColor_.a);
+    s_setColor(currentColor_.r, currentColor_.g, currentColor_.b, currentColor_.a);
 }
 
 void Application::setColor(float r, float g, float b, float a)
@@ -923,7 +923,7 @@ void Application::setColor(float r, float g, float b, float a)
     currentColor_.b = b;
     currentColor_.a = a;
 
-    setColor(currentColor_.r, currentColor_.g, currentColor_.b, currentColor_.a);
+    s_setColor(currentColor_.r, currentColor_.g, currentColor_.b, currentColor_.a);
 }
 
 void Application::getColor(float *r, float *g, float *b, float *a) const
