@@ -124,6 +124,12 @@ public:
     void popBlendFunc();
     void setBlendFunc(GLenum sfactor, GLenum dfactor);
 
+    void pushColor();
+    void popColor();
+    void multColor(float r, float g, float b, float a);
+    void setColor(float r, float g, float b, float a);
+    void getColor(float *r, float *g, float *b, float *a) const;
+
 private:
 	TextureManager textureManager_;
 	Stage* stage_;
@@ -199,9 +205,18 @@ private:
         GLenum sfactor;
         GLenum dfactor;
     };
-
     std::stack<GBlendFunc> blendFuncStack_;
     GBlendFunc currentBlendFunc_;
+
+    struct GColor
+    {
+        GColor() {}
+        GColor(float r, float g, float b, float a) : r(r), g(g), b(b), a(a) {}
+
+        float r, g, b, a;
+    };
+    std::stack<GColor> colorStack_;
+    GColor currentColor_;
 };
 
 #endif

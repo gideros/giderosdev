@@ -1,9 +1,9 @@
 #include <ogl.h>
-#include <color.h>
 #include <string.h>
 #include <vector>
 #include <string>
 #include <platform.h>
+#include <ggl.h>
 
 static void drawIP(const char* ip, int size, int xx, int yy)
 {
@@ -104,8 +104,7 @@ static void drawIP(const char* ip, int size, int xx, int yy)
 
 	static const char* chars[] = {char0, char1, char2, char3, char4, char5, char6, char7, char8, char9};
 
-	glPushColor();
-	glSetColor(0, 0, 0, 1);
+    gglColor4f(0, 0, 0, 1);
 
 	oglDisable(GL_TEXTURE_2D);
 
@@ -157,8 +156,6 @@ static void drawIP(const char* ip, int size, int xx, int yy)
 	}
 
 	oglDisableClientState(GL_VERTEX_ARRAY);
-
-	glPopColor();
 }
 
 static std::vector<std::string> ips;

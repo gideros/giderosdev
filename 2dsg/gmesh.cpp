@@ -1,6 +1,6 @@
 #include <gmesh.h>
 #include <ogl.h>
-#include <color.h>
+#include <application.h>
 
 GMesh::GMesh(Application *application) : GSprite(application)
 {
@@ -262,7 +262,7 @@ void GMesh::doDraw(const CurrentTransform &, float sx, float sy, float ex, float
     if (!colors_.empty())
     {
         float r, g, b, a;
-        glGetColor(&r, &g, &b, &a);
+        application_->getColor(&r, &g, &b, &a);
         if (r != r_ || g != g_ || b != b_ || a != a_)
         {
             r_ = r;
@@ -306,7 +306,7 @@ void GMesh::doDraw(const CurrentTransform &, float sx, float sy, float ex, float
     if (!colors_.empty())
     {
         oglDisableClientState(GL_COLOR_ARRAY);
-        glMultColor(1, 1, 1, 1);
+        application_->multColor(1, 1, 1, 1);
     }
 
     if (texture_ && !textureCoordinates_.empty())

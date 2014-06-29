@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cassert>
 #include <stack>
-#include "color.h"
 #include "stage.h"
 #include <application.h>
 #include <ggl.h>
@@ -183,7 +182,7 @@ void GSprite::draw(const CurrentTransform& transform, float sx, float sy, float 
 		if (pop == true)
 		{
 			if (sprite->colorTransform_ != 0 || sprite->alpha_ != 1)
-				glPopColor();
+                application_->popColor();
 			if (sprite->sfactor_ != -1)
                 application_->popBlendFunc();
 			continue;
@@ -198,7 +197,7 @@ void GSprite::draw(const CurrentTransform& transform, float sx, float sy, float 
 
 		if (sprite->colorTransform_ != 0 || sprite->alpha_ != 1)
 		{
-			glPushColor();
+            application_->pushColor();
 
 			float r = 1, g = 1, b = 1, a = 1;
 
@@ -210,7 +209,7 @@ void GSprite::draw(const CurrentTransform& transform, float sx, float sy, float 
 				a = sprite->colorTransform_->alphaMultiplier();
 			}
 			
-			glMultColor(r, g, b, a * sprite->alpha_);
+            application_->multColor(r, g, b, a * sprite->alpha_);
 		}
 
 		if (sprite->sfactor_ != -1)

@@ -1,7 +1,6 @@
 #include "font.h"
 #include "dib.h"
 #include "ogl.h"
-#include "color.h"
 #include "graphicsbase.h"
 #include <sstream>
 #include <gfile.h>

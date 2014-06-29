@@ -406,13 +406,13 @@ void Shape::endPath()
 		case eNone:
 			break;
 		case eSolid:
-			graphicsBases_.push_back(GraphicsBase());
+            graphicsBases_.push_back(GraphicsBase(application_));
 			createSolidPolygon(fillr_, fillg_, fillb_, filla_, paths_, windingRule_ == eEvenOdd, graphicsBases_.back());
 			if (graphicsBases_.back().indices.empty() || graphicsBases_.back().vertices.empty())
 				graphicsBases_.pop_back();;
 			break;
 		case eTexture:
-			graphicsBases_.push_back(GraphicsBase());
+            graphicsBases_.push_back(GraphicsBase(application_));
 			createTexturePolygon(texture_, matrix_, paths_, windingRule_ == eEvenOdd, graphicsBases_.back());
 			if (graphicsBases_.back().indices.empty() || graphicsBases_.back().vertices.empty())
 				graphicsBases_.pop_back();;
@@ -424,7 +424,7 @@ void Shape::endPath()
 		{
 			for (std::size_t i = 0; i < paths_.size(); ++i)
 			{
-				graphicsBases_.push_back(GraphicsBase());
+                graphicsBases_.push_back(GraphicsBase(application_));
 				createSolidLineStrip(liner_, lineg_, lineb_, linea_, thickness_, paths_[i], graphicsBases_.back());
 				if (graphicsBases_.back().indices.empty() || graphicsBases_.back().vertices.empty())
 					graphicsBases_.pop_back();;

@@ -4,7 +4,7 @@
 #include "texturemanager.h"
 #include "ogl.h"
 
-TTTextField::TTTextField(Application* application, TTFont* font) : TextFieldBase(application)
+TTTextField::TTTextField(Application* application, TTFont* font) : TextFieldBase(application), graphicsBase_(application)
 {
 	font_ = font;
 	font_->ref();
@@ -18,7 +18,7 @@ TTTextField::TTTextField(Application* application, TTFont* font) : TextFieldBase
 	graphicsBase_.getBounds(&minx_, &miny_, &maxx_, &maxy_);
 }
 
-TTTextField::TTTextField(Application* application, TTFont* font, const char* text) : TextFieldBase(application)
+TTTextField::TTTextField(Application* application, TTFont* font, const char* text) : TextFieldBase(application), graphicsBase_(application)
 {
 	font_ = font;
 	font_->ref();

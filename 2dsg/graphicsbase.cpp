@@ -1,6 +1,6 @@
 #include "graphicsbase.h"
 #include "ogl.h"
-#include "color.h"
+#include <application.h>
 
 void GraphicsBase::clear()
 {
@@ -20,8 +20,8 @@ void GraphicsBase::draw()
 
 	if (isWhite_ == false)
 	{
-		glPushColor();
-		glMultColor(r_, g_, b_, a_);
+        application_->pushColor();
+        application_->multColor(r_, g_, b_, a_);
 	}
 
 	if (data)
@@ -56,7 +56,7 @@ void GraphicsBase::draw()
 
 	if (isWhite_ == false)
 	{
-		glPopColor();
+        application_->popColor();
 	}
 }
 

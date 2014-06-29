@@ -5,9 +5,9 @@
 #include <gstatus.h>
 #include <event.h>
 #include "luaapplication.h"
+#include <application.h>
 
 #include <ogl.h>
-#include <color.h>
 #include <sprite.h>
 
 #include "keys.h"
@@ -4725,31 +4725,37 @@ b2DebugDraw::~b2DebugDraw()
 
 void b2DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-	glPushColor();
-	glMultColor(color.r, color.g, color.b,1);
+    Application *application = application_->getApplication();
+
+    application->pushColor();
+    application->multColor(color.r, color.g, color.b,1);
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
 	oglDrawArrays(GL_LINE_LOOP, 0, vertexCount);
-	glPopColor();
+    application->popColor();
 }
 
 void b2DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-	glVertexPointer(2, GL_FLOAT, 0, vertices);
+    Application *application = application_->getApplication();
 
-	glPushColor();
-	glMultColor(color.r, color.g, color.b,0.5f);
+    glVertexPointer(2, GL_FLOAT, 0, vertices);
+
+    application->pushColor();
+    application->multColor(color.r, color.g, color.b,0.5f);
 	oglDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
-	glPopColor();
+    application->popColor();
 
-	glPushColor();
-	glMultColor(color.r, color.g, color.b,1);
+    application->pushColor();
+    application->multColor(color.r, color.g, color.b,1);
 	oglDrawArrays(GL_LINE_LOOP, 0, vertexCount);
-	glPopColor();
+    application->popColor();
 }
 
 void b2DebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
 {
-	const float32 k_segments = 16.0f;
+    Application *application = application_->getApplication();
+
+    const float32 k_segments = 16.0f;
     const int vertexCount=16;
 	const float32 k_increment = 2.0f * b2_pi / k_segments;
 	float32 theta = 0.0f;
@@ -4763,17 +4769,19 @@ void b2DebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color
 		theta += k_increment;
 	}
 
-	glPushColor();
-	glMultColor(color.r, color.g, color.b,1);
+    application->pushColor();
+    application->multColor(color.r, color.g, color.b,1);
 	glVertexPointer(2, GL_FLOAT, 0, glVertices);
 
 	oglDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
-	glPopColor();
+    application->popColor();
 }
 
 void b2DebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
 {
-	const float32 k_segments = 16.0f;
+    Application *application = application_->getApplication();
+
+    const float32 k_segments = 16.0f;
     const int vertexCount=16;
 	const float32 k_increment = 2.0f * b2_pi / k_segments;
 	float32 theta = 0.0f;
@@ -4787,15 +4795,15 @@ void b2DebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2
 		theta += k_increment;
 	}
 
-	glPushColor();
-	glMultColor(color.r, color.g, color.b,0.5f);
+    application->pushColor();
+    application->multColor(color.r, color.g, color.b,0.5f);
 	glVertexPointer(2, GL_FLOAT, 0, glVertices);
 	oglDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount);
-	glPopColor();
-	glPushColor();
-	glMultColor(color.r, color.g, color.b,1);
+    application->popColor();
+    application->pushColor();
+    application->multColor(color.r, color.g, color.b,1);
 	oglDrawArrays(GL_LINE_LOOP, 0, vertexCount);
-	glPopColor();
+    application->popColor();
 
 	// Draw the axis line
 	DrawSegment(center,center+radius*axis,color);
@@ -4803,14 +4811,16 @@ void b2DebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2
 
 void b2DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
-	glPushColor();
-	glMultColor(color.r, color.g, color.b,1);
+    Application *application = application_->getApplication();
+
+    application->pushColor();
+    application->multColor(color.r, color.g, color.b,1);
 	GLfloat				glVertices[] = {
 		p1.x,p1.y,p2.x,p2.y
 	};
 	glVertexPointer(2, GL_FLOAT, 0, glVertices);
 	oglDrawArrays(GL_LINES, 0, 2);
-	glPopColor();
+    application->popColor();
 }
 
 void b2DebugDraw::DrawTransform(const b2Transform& xf)

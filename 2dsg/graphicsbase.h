@@ -9,7 +9,7 @@
 class GraphicsBase
 {
 public:
-	GraphicsBase()
+    GraphicsBase(Application *application) : application_(application)
 	{
 		clear();
 	}
@@ -39,6 +39,7 @@ public:
 private:
 	float r_, g_, b_, a_;
 	bool isWhite_;
+    Application *application_;
 };
 
 #endif

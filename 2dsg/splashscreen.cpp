@@ -34,9 +34,9 @@ static Dib logo2dib(Application* application, unsigned char* logo, size_t logoSi
 	return dib;
 }
 
-static GraphicsBase createGraphicsBase(TextureData* data, int x, int y)
+static GraphicsBase createGraphicsBase(Application *application, TextureData* data, int x, int y)
 {
-	GraphicsBase graphicsBase;
+    GraphicsBase graphicsBase(application);
 	
 	graphicsBase.mode = GL_TRIANGLE_STRIP;
 	
@@ -66,7 +66,7 @@ static GraphicsBase createGraphicsBase(TextureData* data, int x, int y)
 	return graphicsBase;
 }
 
-SplashScreen::SplashScreen(Application* application) : GSprite(application)
+SplashScreen::SplashScreen(Application* application) : GSprite(application), graphicsBase1_(application), graphicsBase2_(application)
 {
 	Dib dib1 = logo2dib(application, logo1, sizeof(logo1), 320, 44);
 	Dib dib2 = logo2dib(application, logo2, sizeof(logo2), 320, 96);
@@ -75,8 +75,8 @@ SplashScreen::SplashScreen(Application* application) : GSprite(application)
 	data1_ = application_->getTextureManager()->createTextureFromDib(dib1, parameters);
 	data2_ = application_->getTextureManager()->createTextureFromDib(dib2, parameters);
 	
-	graphicsBase1_ = createGraphicsBase(data1_, 0, 0);
-	graphicsBase2_ = createGraphicsBase(data2_, 0, 30);
+    graphicsBase1_ = createGraphicsBase(application_, data1_, 0, 0);
+    graphicsBase2_ = createGraphicsBase(application_, data2_, 0, 30);
 
 	startTime_ = iclock();
 

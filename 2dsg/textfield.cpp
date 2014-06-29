@@ -1,7 +1,6 @@
 #include "textfield.h"
-#include "color.h"
 
-TextField::TextField(Application *application) : TextFieldBase(application)
+TextField::TextField(Application *application) : TextFieldBase(application), graphicsBase_(application)
 {
 	font_ = 0;
 
@@ -12,7 +11,7 @@ TextField::TextField(Application *application) : TextFieldBase(application)
 	createGraphics();
 }
 
-TextField::TextField(Application *application, BMFontBase* font) : TextFieldBase(application)
+TextField::TextField(Application *application, BMFontBase* font) : TextFieldBase(application), graphicsBase_(application)
 {
 	font_ = font;
 	if (font_ != 0)
@@ -25,7 +24,7 @@ TextField::TextField(Application *application, BMFontBase* font) : TextFieldBase
 	createGraphics();
 }
 
-TextField::TextField(Application *application, BMFontBase* font, const char* text) : TextFieldBase(application)
+TextField::TextField(Application *application, BMFontBase* font, const char* text) : TextFieldBase(application), graphicsBase_(application)
 {
 	text_ = text;
 	updateWide();

@@ -8,7 +8,7 @@
 class GBitmap : public GSprite
 {
 public:
-    GBitmap(Application *application, GTextureRegion* bitmapdata) : GSprite(application)
+    GBitmap(Application *application, GTextureRegion* bitmapdata) : GSprite(application), graphicsBase_(application)
 	{
 		//printf("Bitmap()\n");
 		bitmapdata_ = bitmapdata;
@@ -25,7 +25,7 @@ public:
         updateBounds();
 	}
 
-    GBitmap(Application *application, GTextureBase* texturebase) : GSprite(application)
+    GBitmap(Application *application, GTextureBase* texturebase) : GSprite(application), graphicsBase_(application)
 	{
 		texturebase_ = texturebase;
 		texturebase_->ref();

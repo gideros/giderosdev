@@ -14,10 +14,6 @@
 #include <memory.h>
 #include <gstdio.h>
 
-#ifndef PREMULTIPLIED_ALPHA
-#error PREMULTIPLIED_ALPHA is not defined
-#endif
-
 #if 0 && defined(QT_CORE_LIB)
 #include <QDebug>
 #endif
@@ -84,11 +80,17 @@ Application::Application() :
 
 	scale_ = 1;
 
+#ifndef PREMULTIPLIED_ALPHA
+#error PREMULTIPLIED_ALPHA is not defined
+#endif
+
 #if PREMULTIPLIED_ALPHA
     currentBlendFunc_ = GBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 #else
     currentBlendFunc_ = GBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 #endif
+
+    currentColor_ = GColor(1, 1, 1, 1);
 }
 
 Application::~Application()
@@ -875,5 +877,60 @@ void Application::setBlendFunc(GLenum sfactor, GLenum dfactor)
     currentBlendFunc_.dfactor = dfactor;
 
     gglBlendFunc(currentBlendFunc_.sfactor, currentBlendFunc_.dfactor);
+}
+
+
+static inline void setColor(float r, float g, float b, float a)
+{
+#ifndef PREMULTIPLIED_ALPHA
+#error PREMULTIPLIED_ALPHA is not defined
+#endif
+
+#if PREMULTIPLIED_ALPHA
+    gglColor4f(r * a, g * a, b * a, a);
+#else
+    gglColor4f(r, g, b, a);
+#endif
+}
+
+void Application::pushColor()
+{
+    colorStack_.push(currentColor_);
+}
+
+void Application::popColor()
+{
+    currentColor_ = colorStack_.top();
+    colorStack_.pop();
+
+    setColor(currentColor_.r, currentColor_.g, currentColor_.b, currentColor_.a);
+}
+
+void Application::multColor(float r, float g, float b, float a)
+{
+    currentColor_.r *= r;
+    currentColor_.g *= g;
+    currentColor_.b *= b;
+    currentColor_.a *= a;
+
+    setColor(currentColor_.r, currentColor_.g, currentColor_.b, currentColor_.a);
+}
+
+void Application::setColor(float r, float g, float b, float a)
+{
+    currentColor_.r = r;
+    currentColor_.g = g;
+    currentColor_.b = b;
+    currentColor_.a = a;
+
+    setColor(currentColor_.r, currentColor_.g, currentColor_.b, currentColor_.a);
+}
+
+void Application::getColor(float *r, float *g, float *b, float *a) const
+{
+    *r = currentColor_.r;
+    *g = currentColor_.g;
+    *b = currentColor_.b;
+    *a = currentColor_.a;
 }
 
