@@ -450,34 +450,6 @@ double iclock()
 }
 #endif
 
-extern "C"
-{
-#include "md5.h"
-}
 
-bool md5_fromfile(const char* filename, unsigned char md5sum[16])
-{
-	FILE* f = fopen(filename, "rb");
-
-	if (f == NULL)
-		return false;
-
-	md5_context ctx;
-	unsigned char buf[1000];
-
-	md5_starts( &ctx );
-
-	int i;
-	while( ( i = fread( buf, 1, sizeof( buf ), f ) ) > 0 )
-	{
-		md5_update( &ctx, buf, i );
-	}
-
-	md5_finish( &ctx, md5sum );
-	
-	fclose(f);
-	
-	return true;
-}
 
 

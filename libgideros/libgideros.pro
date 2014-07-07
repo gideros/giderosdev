@@ -40,18 +40,18 @@ HEADERS += \
 INCLUDEPATH += \
 	. \
 	../lua/src \
-	../libpystring
+        ../external/pystring
 
 win32 {
 LIBS += -L"../libgid/release" -lgid
 LIBS += -L"../lua/release" -llua
-LIBS += -L"../libpystring/release" -lpystring
+LIBS += -L"../external/pystring/build/mingw482_32" -lpystring
 }
 
 macx {
 LIBS += -L"../libgid" -lgid
 LIBS += -L"../lua" -llua
-LIBS += -L"../libpystring" -lpystring
+#LIBS += -L"../libpystring" -lpystring #TODO
 }
 
 

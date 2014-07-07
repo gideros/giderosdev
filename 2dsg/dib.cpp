@@ -3,7 +3,6 @@
 #include "refptr.h"
 #include <gfile.h>
 #include "application.h"
-#include <pystring.h>
 #include "giderosexception.h"
 #include <gimage.h>
 #include <gstdio.h>

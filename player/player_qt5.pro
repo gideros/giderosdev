@@ -26,7 +26,6 @@ INCLUDEPATH += \
     ../libgid/include\
     ../libgid/include/qt\
     ../libgideros\
-    ../libpystring\
     "../external/glu"
 
 macx {
@@ -76,7 +75,6 @@ SOURCES += $$files(../luabinding/*.cpp)	../luabinding/tlsf.c
 SOURCES += $$files(../libnetwork/*.cpp)
 
 SOURCES += \
-    ../libplatform/md5.c \
     ../libplatform/platform.cpp \
     ../libplatform/platformutil.cpp \
     ../libplatform/utf8.c \
@@ -125,12 +123,14 @@ LIBS += -lwsock32
 LIBS += -liphlpapi
 }
 
+INCLUDEPATH += ../external/pystring
+
 win32 {
 LIBS += -L"../libgid/release" -lgid
 LIBS += -L"../libgvfs/release" -lgvfs
 LIBS += -L"../lua/release" -llua
 LIBS += -L"../libgideros/release" -lgideros
-LIBS += -L"../libpystring/release" -lpystring
+LIBS += -L"../external/pystring/build/mingw482_32" -lpystring
 }
 
 macx {
@@ -138,7 +138,7 @@ LIBS += -L"../libgid" -lgid
 LIBS += -L"../libgvfs" -lgvfs
 LIBS += -L"../lua" -llua
 LIBS += -L"../libgideros" -lgideros
-LIBS += -L"../libpystring" -lpystring
+#LIBS += -L"../libpystring" -lpystring
 LIBS += -L"/opt/local/lib" -lGLEW -lfreetype
 }
 
