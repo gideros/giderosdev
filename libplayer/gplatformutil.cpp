@@ -35,6 +35,9 @@ void gGetDirectoryListing(const char *dir, std::vector<std::string> *files, std:
 
     hFind = FindFirstFileW(dirstar.c_str(), &ffd);
 
+    if (hFind == INVALID_HANDLE_VALUE)
+        return;
+
     do
     {
         if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
