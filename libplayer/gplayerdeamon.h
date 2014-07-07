@@ -7,7 +7,18 @@
 #include <map>
 #include <vector>
 
-class GPlayerDaemon
+#ifdef _WIN32
+#ifdef PLAYERDEAMON_LIBRARY
+#define PLAYERDEAMON_API __declspec(dllexport)
+#else
+#define PLAYERDEAMON_API __declspec(dllimport)
+#endif
+#else
+#define PLAYERDEAMON_API
+#endif
+
+
+class PLAYERDEAMON_API GPlayerDaemon
 {
 public:
     enum GCommandType
@@ -51,14 +62,6 @@ private:
 
 private:
     std::deque<std::pair<GCommandType, std::string> > commandQueue_;
-
-#if 0
-private:
-    typedef std::map<std::string, std::pair<time_t, std::vector<unsigned char> > > MD5;
-    static void loadMD5(MD5 &md5, const char *filename);
-    static void saveMD5(const MD5 &md5, const char *filename);
-    static bool updateMD5(MD5 &md5, const char *key, const char *filename);
-#endif
 };
 
 #endif

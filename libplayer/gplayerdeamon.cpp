@@ -6,32 +6,6 @@
 #include <sstream>
 #include <gmd5.h>
 
-#if 0
-
-static FILE * g_fopen ( const char * filename, const char * mode )
-{
-    printf("fopen: %s\n", filename);
-    return (FILE*)1;
-}
-
-static int g_fclose ( FILE * stream )
-{
-    return 0;
-}
-
-static size_t g_fwrite ( const void * ptr, size_t size, size_t count, FILE * stream )
-{
-    return count;
-}
-
-#define fopen g_fopen
-#define fclose g_fclose
-#define fwrite g_fwrite
-
-#endif
-
-
-
 #define GET 0
 #define POST 1
 
