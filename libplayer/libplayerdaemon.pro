@@ -1,20 +1,20 @@
 QT -= core gui
 
-TARGET = playerdeamon
+TARGET = playerdaemon
 TEMPLATE = lib
 
-DEFINES += PLAYERDEAMON_LIBRARY
+DEFINES += PLAYERDAEMON_LIBRARY
 
 HEADERS += \
     gmd5.h \
     gplatformutil.h \
-    gplayerdeamon.h \
+    gplayerdaemon.h \
     gutil.h
 
 SOURCES += \
     gmd5.cpp \
     gplatformutil.cpp \
-    gplayerdeamon.cpp \
+    gplayerdaemon.cpp \
     gutil.cpp
 
 INCLUDEPATH += ../external/md5 ../external/pystring ../external/libmicrohttpd-0.9.37/src/include

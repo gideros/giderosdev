@@ -8,17 +8,17 @@
 #include <vector>
 
 #ifdef _WIN32
-#ifdef PLAYERDEAMON_LIBRARY
-#define PLAYERDEAMON_API __declspec(dllexport)
+#ifdef PLAYERDAEMON_LIBRARY
+#define PLAYERDAEMON_API __declspec(dllexport)
 #else
-#define PLAYERDEAMON_API __declspec(dllimport)
+#define PLAYERDAEMON_API __declspec(dllimport)
 #endif
 #else
-#define PLAYERDEAMON_API
+#define PLAYERDAEMON_API
 #endif
 
 
-class PLAYERDEAMON_API GPlayerDaemon
+class PLAYERDAEMON_API GPlayerDaemon
 {
 public:
     enum GCommandType

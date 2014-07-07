@@ -1,4 +1,4 @@
-#include <gplayerdeamon.h>
+#include <gplayerdaemon.h>
 #include <pystring.h>
 #include <direct.h>
 #include <gplatformutil.h>
