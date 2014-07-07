@@ -1,12 +1,13 @@
 #ifndef PROJECTPROPERTIES_H
 #define PROJECTPROPERTIES_H
 
-#include <vector>
 #include <QString>
+#include <QPair>
+#include <QList>
 
-struct ProjectProperties
+struct GProjectProperties
 {
-	ProjectProperties()
+    GProjectProperties()
 	{
 		clear();
 	}
@@ -43,7 +44,7 @@ struct ProjectProperties
 	int scaleMode;
 	int logicalWidth;
 	int logicalHeight;
-	std::vector<std::pair<QString, double> > imageScales;
+    QList<QPair<QString, double> > imageScales;
 	int orientation;
 	int fps;
 

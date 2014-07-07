@@ -1,1 +1,1 @@
-#include "projectproperties.h"
+#include <gprojectproperties.h>

@@ -6,7 +6,7 @@
 #include <vector>
 #include <map>
 
-class DependencyGraph
+class GDependencyGraph
 {
     struct Vertex
     {
@@ -24,8 +24,8 @@ class DependencyGraph
     };
 
 public:
-    DependencyGraph() {}
-    ~DependencyGraph();
+    GDependencyGraph() {}
+    ~GDependencyGraph();
 
     void clear();
 
@@ -49,8 +49,8 @@ private:
     map vertices_;
 
 private:
-    DependencyGraph(const DependencyGraph&);
-    DependencyGraph& operator=(const DependencyGraph&);
+    GDependencyGraph(const GDependencyGraph&);
+    GDependencyGraph& operator=(const GDependencyGraph&);
 };
 
 #endif
