@@ -6,6 +6,8 @@
 #include <sstream>
 #include <gmd5.h>
 
+#include <microhttpd.h>
+
 #define GET 0
 #define POST 1
 
@@ -366,3 +368,14 @@ int GPlayerDaemon::handlePost(MHD_Connection *connection, const char *url, const
     return sendPage(connection, "ok");
 }
 
+
+std::pair<GPlayerDaemon::GCommandType, std::string> GPlayerDaemon::dequeueCommand()
+{
+    if (commandQueue_.empty())
+        return std::make_pair(eNone, std::string());
+
+    std::pair<GPlayerDaemon::GCommandType, std::string> result = commandQueue_.front();
+    commandQueue_.pop_front();
+
+    return result;
+}

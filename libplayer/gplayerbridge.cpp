@@ -288,6 +288,31 @@ void GPlayerBridge::play(const QString &fileName)
         }
     }
 
+    // upload properties.gideros
+    {
+        QJsonDocument doc;
+
+        QJsonObject properties;
+        properties["scaleMode"] = properties_.scaleMode;
+        properties["logicalWidth"] = properties_.logicalWidth;
+        properties["logicalHeight"] = properties_.logicalHeight;
+        //properties["imageScales"];
+        properties["orientation"] = properties_.orientation;
+        properties["fps"] = properties_.fps;
+
+        properties["retinaDisplay"] = properties_.retinaDisplay;
+        properties["autorotation"] = properties_.autorotation;
+
+        properties["mouseToTouch"] = properties_.mouseToTouch;
+        properties["touchToMouse"] = properties_.touchToMouse;
+        properties["mouseTouchOrder"] = properties_.mouseTouchOrder;
+
+
+        //QByteArray properties;
+        //upload(projectName, "properties.gideros", properties, "");
+    }
+
+
     // upload files with different md5 and younger age
     for (GMD5::iterator iter = localFileMap.begin(); iter != localFileMap.end(); ++iter)
     {
@@ -315,7 +340,7 @@ void GPlayerBridge::play(const QString &fileName)
         }
 
         if (send)
-            upload(projectName, fullPath, remoteFileName);
+            upload(projectName, fullPath, QFileInfo(remoteFileName).path());
     }
 
     emit quit();
@@ -342,7 +367,7 @@ void GPlayerBridge::upload(const QString &projectName, const QString &localFile,
 
     multiPart.append(filePart);
 
-    QString url = "http://localhost:15000/upload/" + projectName + "/" + QFileInfo(remoteDir).path();
+    QString url = "http://localhost:15000/upload/" + projectName + "/" + remoteDir;
 
     QNetworkReply *reply = manager_.post(QNetworkRequest(QUrl(url)), &multiPart);
 
@@ -351,4 +376,24 @@ void GPlayerBridge::upload(const QString &projectName, const QString &localFile,
     loop.exec();
 }
 
+
+void GPlayerBridge::upload(const QString &projectName, const QByteArray &localFile, const QByteArray &data, const QString &remoteDir)
+{
+    QHttpMultiPart multiPart(QHttpMultiPart::FormDataType);
+
+    QHttpPart filePart;
+    filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"file\"; filename=\"" + QFileInfo(localFile).fileName() + "\""));
+
+    filePart.setBody(data);
+
+    multiPart.append(filePart);
+
+    QString url = "http://localhost:15000/upload/" + projectName + "/" + remoteDir;
+
+    QNetworkReply *reply = manager_.post(QNetworkRequest(QUrl(url)), &multiPart);
+
+    QEventLoop loop;
+    connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+}
 

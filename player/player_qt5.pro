@@ -88,6 +88,11 @@ SOURCES += \
     ../libplatform/exit-generic.cpp \
     ../libplatform/gtimer.cpp
 
+
+INCLUDEPATH += ../libplayer
+LIBS += -L../libplayer/release -lplayerdaemon
+
+
 SOURCES += $$files(../2dsg/*.cpp)
 
 SOURCES += $$files(../libpvrt/*.cpp)

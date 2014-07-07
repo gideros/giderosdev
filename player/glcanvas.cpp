@@ -108,6 +108,8 @@ GLCanvas::GLCanvas(QWidget *parent)
     //setAccessFileCallback(accessFileCallback_s, this);
 
 	running_ = false;
+
+    playerDaemon_ = new GPlayerDaemon;
 }
 
 GLCanvas::~GLCanvas()
@@ -139,6 +141,8 @@ GLCanvas::~GLCanvas()
 
 	delete server_;
 	g_server = 0;
+
+    delete playerDaemon_;
 }
 
 void GLCanvas::initializeGL()
@@ -210,6 +214,25 @@ void GLCanvas::onTimer()
 		timerEvent(0);
 }
 
+void GLCanvas::timerEvent(QTimerEvent *)
+{
+    std::pair<GPlayerDaemon::GCommandType, std::string> command = playerDaemon_->dequeueCommand();
+
+    switch (command.first)
+    {
+    case GPlayerDaemon::eNone:
+        break;
+    case GPlayerDaemon::ePlay:
+        break;
+    case GPlayerDaemon::eStop:
+        break;
+    }
+
+    update();
+}
+
+
+#if 0
 
 // TODO: TimerEvent.TIMER'da bi exception olursa, o event bir daha cagirilmiyor. Bunun nedeini bulmak lazim
 void GLCanvas::timerEvent(QTimerEvent *)
@@ -490,6 +513,8 @@ void GLCanvas::timerEvent(QTimerEvent *)
 	update();
 }
 
+#endif
+
 void GLCanvas::mousePressEvent(QMouseEvent* event)
 {
     ginputp_mouseDown(event->x() * scale_, event->y() * scale_, 0);
@@ -612,6 +637,7 @@ void GLCanvas::setFps(int fps)
 	clock_ = iclock();
 }
 
+#if 0
 void GLCanvas::sendFileList()
 {
 	allResourceFiles.clear();
@@ -656,6 +682,8 @@ void GLCanvas::sendFileList()
 
 	server_->sendData(buffer.data(), buffer.size());
 }
+#endif
+
 
 /*
 void GLCanvas::accessFileCallback_s(FileType type, const char* filename, void* data)
@@ -678,6 +706,7 @@ void GLCanvas::sendRun()
 	server_->sendData(buffer.data(), buffer.size());
 }
 
+#if 0
 void GLCanvas::loadMD5()
 {
 /*	md5_.clear();
@@ -818,6 +847,9 @@ void GLCanvas::printMD5()
 		qDebug() << buffer;
 	}
 }
+
+#endif
+
 
 void GLCanvas::setScale(int scale)
 {

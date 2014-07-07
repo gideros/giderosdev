@@ -24,7 +24,8 @@ private:
     QNetworkAccessManager manager_;
 
 private:
-    void upload(const QString &projectName, const QString &localFile, const QString &remoteFile);
+    void upload(const QString &projectName, const QString &localFile, const QString &remoteFileName);
+    void upload(const QString &projectName, const QByteArray &localFile, const QByteArray &data, const QString &remoteFileName);
 };
 
 #endif

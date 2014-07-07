@@ -2,7 +2,6 @@
 #define GPLAYERDEAMON_H
 
 #include <string>
-#include <microhttpd.h>
 #include <deque>
 #include <map>
 #include <vector>
@@ -16,6 +15,9 @@
 #else
 #define PLAYERDAEMON_API
 #endif
+
+struct MHD_Connection;
+struct MHD_Daemon;
 
 
 class PLAYERDAEMON_API GPlayerDaemon

@@ -15,6 +15,8 @@ class Server;
 
 #include <QUrl>
 
+#include <gplayerdaemon.h>
+
 /*
 class PlatformImplementation : public PlatformInterface
 {
@@ -74,13 +76,18 @@ private:
 
 private:
 	void deleteFiles();
+#if 0
 	void sendFileList();
+#endif
 
+#if 0
 private:
 	void loadMD5();
 	void saveMD5();
 	void calculateMD5(const char* file);
 	void printMD5();
+#endif
+
 
 signals:
 	void projectNameChanged(const QString& projectName);
@@ -101,6 +108,9 @@ private:
 	bool running_;
 	std::map<std::string, std::vector<unsigned char> > md5_;
 	int scale_;
+
+private:
+    GPlayerDaemon *playerDaemon_;
 };
 
 #endif // GLCANVAS_H
