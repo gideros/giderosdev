@@ -110,6 +110,12 @@ GLCanvas::GLCanvas(QWidget *parent)
 	running_ = false;
 
     playerDaemon_ = new GPlayerDaemon;
+
+    QDir dir = QDir("c:/temp");  /* QDir::temp() */
+    dir.mkdir("gideros");
+    dir.cd("gideros");
+
+    playerDaemon_->setRootDirectory(dir.absolutePath().toUtf8().constData());
 }
 
 GLCanvas::~GLCanvas()
