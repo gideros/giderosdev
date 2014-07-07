@@ -1,5 +1,5 @@
-#ifndef GPLAYERBRIDGE_H
-#define GPLAYERBRIDGE_H
+#ifndef GPLAYERDEAMON_H
+#define GPLAYERDEAMON_H
 
 #include <string>
 #include <microhttpd.h>
