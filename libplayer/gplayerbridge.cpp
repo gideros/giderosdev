@@ -14,7 +14,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <gprojectproperties.h>
-#include <dependencygraph.h>
+#include <gdependencygraph.h>
 #include <QStack>
 #include <gplatformutil.h>
 #include <gutil.h>

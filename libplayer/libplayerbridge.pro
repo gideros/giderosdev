@@ -6,7 +6,14 @@ TEMPLATE = lib
 CONFIG += staticlib
 
 HEADERS += \
-    gplayerbridge.h
+    gplayerbridge.h \
+    ../libproject/gdependencygraph.h \
+    ../libproject/gprojectproperties.h
 
 SOURCES += \
-    gplayerbridge.cpp
+    gplayerbridge.cpp \
+    ../libproject/gdependencygraph.cpp \
+    ../libproject/gprojectproperties.cpp
+
+INCLUDEPATH += ../libproject
+
