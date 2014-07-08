@@ -98,6 +98,14 @@ void GPlayerBridge::play(const QString &fileName)
         if (!properties.attribute("autorotation").isEmpty())
             properties_.autorotation = properties.attribute("autorotation").toInt();
 
+        // input options
+        if (!properties.attribute("mouseToTouch").isEmpty())
+            properties_.mouseToTouch = properties.attribute("mouseToTouch").toInt() != 0;
+        if (!properties.attribute("touchToMouse").isEmpty())
+            properties_.touchToMouse = properties.attribute("touchToMouse").toInt() != 0;
+        if (!properties.attribute("mouseTouchOrder").isEmpty())
+            properties_.mouseTouchOrder = properties.attribute("mouseTouchOrder").toInt();
+
         // export options
         if (!properties.attribute("architecture").isEmpty())
             properties_.architecture = properties.attribute("architecture").toInt();
@@ -107,8 +115,11 @@ void GPlayerBridge::play(const QString &fileName)
             properties_.iosDevice = properties.attribute("iosDevice").toInt();
         if (!properties.attribute("packageName").isEmpty())
             properties_.packageName = properties.attribute("packageName");
+        if (!properties.attribute("encryptCode").isEmpty())
+            properties_.encryptCode = properties.attribute("encryptCode").toInt() != 0;
+        if (!properties.attribute("encryptAssets").isEmpty())
+            properties_.encryptAssets = properties.attribute("encryptAssets").toInt() != 0;
     }
-
 
     // populate file list and dependency graph
     {
