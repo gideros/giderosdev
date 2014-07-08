@@ -290,13 +290,21 @@ void GPlayerBridge::play(const QString &fileName)
 
     // upload properties.gideros
     {
-        QJsonDocument doc;
-
         QJsonObject properties;
         properties["scaleMode"] = properties_.scaleMode;
         properties["logicalWidth"] = properties_.logicalWidth;
         properties["logicalHeight"] = properties_.logicalHeight;
-        //properties["imageScales"];
+
+        QJsonArray imageScales;
+        for (int i = 0; i < properties_.imageScales.size(); ++i)
+        {
+            QJsonObject imageScale;
+            imageScale["suffix"] = properties_.imageScales[i].first;
+            imageScale["scale"] = properties_.imageScales[i].second;
+            imageScales.append(imageScale);
+        }
+
+        properties["imageScales"] = imageScales;
         properties["orientation"] = properties_.orientation;
         properties["fps"] = properties_.fps;
 
@@ -308,10 +316,22 @@ void GPlayerBridge::play(const QString &fileName)
         properties["mouseTouchOrder"] = properties_.mouseTouchOrder;
 
 
-        //QByteArray properties;
-        //upload(projectName, "properties.gideros", properties, "");
-    }
+        QJsonArray luaFiles;
 
+        std::vector<std::pair<QString, bool> > topologicalSort = dependencyGraph_.topologicalSort();
+        for (std::size_t i = 0; i < topologicalSort.size(); ++i)
+            if (topologicalSort[i].second == false)
+                luaFiles.append(localToRemote[topologicalSort[i].first]);
+
+        QJsonObject root;
+        root["properties"] = properties;
+        root["luaFiles"] = luaFiles;
+
+        QJsonDocument doc;
+        doc.setObject(root);
+
+        upload(projectName, "properties.gideros", doc.toJson(), "");
+    }
 
     // upload files with different md5 and younger age
     for (GMD5::iterator iter = localFileMap.begin(); iter != localFileMap.end(); ++iter)
