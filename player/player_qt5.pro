@@ -92,6 +92,8 @@ SOURCES += \
 INCLUDEPATH += ../libplayer
 LIBS += -L../libplayer/release -lplayerdaemon
 
+INCLUDEPATH += ../external/cJSON
+LIBS += -L../external/cJSON/build/mingw482_32 -lcJSON
 
 SOURCES += $$files(../2dsg/*.cpp)
 

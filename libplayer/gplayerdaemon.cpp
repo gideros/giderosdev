@@ -261,7 +261,7 @@ int GPlayerDaemon::handleGet(MHD_Connection *connection, const char *url)
         std::string path = rootDirectory_;
         path = pystring::os::path::join(path, paths[1]);
         std::string md5filename = pystring::os::path::join(path, "md5.bin");
-        path = pystring::os::path::join(path, "Resources");
+        path = pystring::os::path::join(path, "resource");
 
         std::vector<std::string> files;
         gGetDirectoryListingRecursive(path.c_str(), &files, NULL);
@@ -305,7 +305,7 @@ int GPlayerDaemon::handleGet(MHD_Connection *connection, const char *url)
         std::string path = rootDirectory_;
         path = pystring::os::path::join(path, paths[1]);
         std::string md5filename = pystring::os::path::join(path, "md5.bin");
-        path = pystring::os::path::join(path, "Resources");
+        path = pystring::os::path::join(path, "resource");
         for (size_t i = 2; i < paths.size(); ++i)
             path = pystring::os::path::join(path, paths[i]);
 
@@ -344,7 +344,7 @@ int GPlayerDaemon::handlePost(MHD_Connection *connection, const char *url, const
     path = pystring::os::path::join(path, paths[1]);
     _mkdir(path.c_str());
     std::string md5filename = pystring::os::path::join(path, "md5.bin");
-    path = pystring::os::path::join(path, "Resources");
+    path = pystring::os::path::join(path, "resource");
     _mkdir(path.c_str());
     for (size_t i = 2; i < paths.size(); ++i)
     {

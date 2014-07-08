@@ -32,6 +32,11 @@
 
 #include <glog.h>
 
+#include <gpath.h>
+
+#include <cJSON.h>
+#include <gstdio.h>
+
 static int __mkdir(const char* path)
 {
 #ifdef _WIN32
@@ -81,7 +86,7 @@ static void printToServer(const char* str, int len, void* data)
 GLCanvas::GLCanvas(QWidget *parent)
 	: QGLWidget(parent)
 {
-	server_ = new Server(15000);
+    server_ = new Server(15002);
 	g_server = server_;
 	application_ = new LuaApplication;
 	application_->enableExceptions();
@@ -111,7 +116,7 @@ GLCanvas::GLCanvas(QWidget *parent)
 
     playerDaemon_ = new GPlayerDaemon;
 
-    QDir dir = QDir("c:/temp");  /* QDir::temp() */
+    QDir dir = QDir::temp();
     dir.mkdir("gideros");
     dir.cd("gideros");
 
@@ -229,7 +234,122 @@ void GLCanvas::timerEvent(QTimerEvent *)
     case GPlayerDaemon::eNone:
         break;
     case GPlayerDaemon::ePlay:
+    {
+        application_->deinitialize();
+        application_->initialize();
+
+        // set directories
+        {
+            QDir dir = QDir::temp();
+            dir.mkdir("gideros");
+            dir.cd("gideros");
+
+            QString projectName = QString::fromStdString(command.second);
+            dir.mkdir(projectName);
+            dir.cd(projectName);
+
+            dir.mkdir("resource");
+            dir.mkdir("documents");
+            dir.mkdir("temporary");
+
+            gpath_setDrivePath(0, dir.filePath("resource").toUtf8().constData());
+            gpath_setDrivePath(1, dir.filePath("documents").toUtf8().constData());
+            gpath_setDrivePath(2, dir.filePath("temporary").toUtf8().constData());
+        }
+
+        {
+            G_FILE *fis = g_fopen("properties.gideros", "rb");
+            g_fseek(fis, 0, SEEK_END);
+            long size = g_ftell(fis);
+            g_fseek(fis, 0, SEEK_SET);
+
+            char *buffer = (char*)malloc(size);
+            g_fread(buffer, 1, size, fis);
+            g_fclose(fis);
+
+            cJSON *json = cJSON_Parse(buffer);
+
+            // read properties and apply
+            {
+                cJSON *properties = cJSON_GetObjectItem(json, "properties");
+
+                int scaleMode = cJSON_GetObjectItem(properties, "scaleMode")->valueint;
+                int logicalWidth = cJSON_GetObjectItem(properties, "logicalWidth")->valueint;
+                int logicalHeight = cJSON_GetObjectItem(properties, "logicalHeight")->valueint;
+
+                cJSON *imageScales = cJSON_GetObjectItem(properties, "imageScales");
+                int scaleCount = cJSON_GetArraySize(imageScales);
+                std::vector<std::pair<std::string, float> > imageScales2(scaleCount);
+                for (int i = 0; i < scaleCount; ++i)
+                {
+                    cJSON *imageScale = cJSON_GetArrayItem(imageScales, i);
+                    imageScales2[i].first = cJSON_GetObjectItem(imageScale, "suffix")->valuestring;
+                    imageScales2[i].second = cJSON_GetObjectItem(imageScale, "scale")->valuedouble;
+                }
+
+                int orientation = cJSON_GetObjectItem(properties, "orientation")->valueint;
+                /* int fps = cJSON_GetObjectItem(properties, "fps")->valueint; */
+                /* int retinaDisplay = cJSON_GetObjectItem(properties, "retinaDisplay")->valueint; */
+                /* int autorotation = cJSON_GetObjectItem(properties, "autorotation")->valueint; */
+                bool mouseToTouch = cJSON_GetObjectItem(properties, "autorotation")->type;
+                bool touchToMouse = cJSON_GetObjectItem(properties, "autorotation")->type;
+                int mouseTouchOrder = cJSON_GetObjectItem(properties, "mouseTouchOrder")->valueint;
+
+                application_->setLogicalScaleMode((LogicalScaleMode)scaleMode);
+                application_->setLogicalDimensions(logicalWidth, logicalHeight);
+                application_->setImageScales(imageScales2);
+
+                application_->setOrientation((Orientation)orientation);
+                application_->getApplication()->setDeviceOrientation((Orientation)orientation);
+
+                ginput_setMouseToTouchEnabled(mouseToTouch);
+                ginput_setTouchToMouseEnabled(touchToMouse);
+                ginput_setMouseTouchOrder(mouseTouchOrder);
+            }
+
+            // run lua files
+            {
+                cJSON *luaFiles = cJSON_GetObjectItem(json, "luaFiles");
+                int fileCount =  cJSON_GetArraySize(luaFiles);
+                std::vector<std::string> luaFiles2(fileCount);
+                for (int i = 0; i < fileCount; ++i)
+                    luaFiles2[i] = cJSON_GetArrayItem(luaFiles, i)->valuestring;
+
+                running_ = true;
+
+                GStatus status;
+                for (std::size_t i = 0; i < luaFiles2.size(); ++i)
+                {
+                    application_->loadFile(luaFiles2[i].c_str(), &status);
+                    if (status.error())
+                        break;
+                }
+
+                if (!status.error())
+                {
+                    Event event(Event::APPLICATION_START);
+                    application_->broadcastEvent(&event, &status);
+                }
+
+                if (status.error())
+                {
+                    running_ = false;
+
+                    errorDialog_.appendString(status.errorString());
+                    errorDialog_.show();
+                    printToServer(status.errorString(), -1, NULL);
+                    printToServer("\n", -1, NULL);
+                    application_->deinitialize();
+                    application_->initialize();
+                }
+            }
+
+            cJSON_Delete(json);
+            free(buffer);
+        }
+
         break;
+    }
     case GPlayerDaemon::eStop:
         break;
     }

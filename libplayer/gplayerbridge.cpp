@@ -303,8 +303,8 @@ void GPlayerBridge::play(const QString &fileName)
             imageScale["scale"] = properties_.imageScales[i].second;
             imageScales.append(imageScale);
         }
-
         properties["imageScales"] = imageScales;
+
         properties["orientation"] = properties_.orientation;
         properties["fps"] = properties_.fps;
 
@@ -361,6 +361,18 @@ void GPlayerBridge::play(const QString &fileName)
 
         if (send)
             upload(projectName, fullPath, QFileInfo(remoteFileName).path());
+    }
+
+
+    // send play
+    {
+        QString url = "http://localhost:15000/play/" + projectName;
+
+        QNetworkReply *reply = manager_.get(QNetworkRequest(QUrl(url)));
+
+        QEventLoop loop;
+        connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+        loop.exec();
     }
 
     emit quit();
