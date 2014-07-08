@@ -1,8 +1,10 @@
 #ifndef _TEXTUREMANAGER_H_
 #define _TEXTUREMANAGER_H_
 
-#include <gtexture.h>
+//#include <gtexture.h>
 #include <map>
+#include <vector>
+#include <ggl.h>
 
 class Application;
 class TextureData;
@@ -51,8 +53,12 @@ struct TextureParameters
 
 struct TextureData
 {
-    unsigned int id();
-    g_id gid;
+    int refcount;
+    std::vector<char> sig;
+
+    GLuint id();
+    GLuint gid;
+
     TextureParameters parameters;
     int width, height;
     int exwidth, exheight;
@@ -73,6 +79,8 @@ public:
 
 private:
     Application *application_;
+
+    std::map<std::vector<char>, TextureData*> textureCache_;
 };
 
 

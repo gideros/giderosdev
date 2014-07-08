@@ -1,5 +1,5 @@
 #include "texturemanager.h"
-#include <gtexture.h>
+//#include <gtexture.h>
 #include <gimage.h>
 #include <gpath.h>
 #include <vector>
@@ -10,19 +10,19 @@
 #include "glcommon.h"
 #include <application.h>
 
-unsigned int TextureData::id()
+GLuint TextureData::id()
 {
-    return gtexture_getInternalId(gid);
+    return gid;
 }
 
-static void append(std::vector<char>& buffer, const void *data, size_t len)
+static void append(std::vector<char> &buffer, const void *data, size_t len)
 {
     size_t s = buffer.size();
     buffer.resize(s + len);
     memcpy(&buffer[s], data, len);
 }
 
-static void append(std::vector<char>& buffer, const TextureParameters& parameters)
+static void append(std::vector<char> &buffer, const TextureParameters &parameters)
 {
     append(buffer, &parameters.filter, sizeof(parameters.filter));
     append(buffer, &parameters.wrap, sizeof(parameters.wrap));
@@ -38,9 +38,10 @@ TextureManager::TextureManager(Application* application) :
 
 TextureManager::~TextureManager()
 {
+    /* TODO: delete textures */
 }
 
-TextureData* TextureManager::createTextureFromFile(const char* filename, const TextureParameters& parameters)
+TextureData *TextureManager::createTextureFromFile(const char *filename, const TextureParameters &parameters)
 {
     int flags = gpath_getDriveFlags(gpath_getPathDrive(filename));
 
@@ -63,64 +64,62 @@ TextureData* TextureManager::createTextureFromFile(const char* filename, const T
         }
     }
 
-    int wrap = 0;
+    GLenum wrap = 0; // to avoid -Wmaybe-uninitialized warning
     switch (parameters.wrap)
     {
     case eClamp:
-        wrap = GTEXTURE_CLAMP;
+        wrap = GL_CLAMP_TO_EDGE;
         break;
     case eRepeat:
-        wrap = GTEXTURE_REPEAT;
+        wrap = GL_REPEAT;
         break;
     }
 
-    int filter = 0;
+    GLenum filter = 0; // to avoid -Wmaybe-uninitialized warning
     switch (parameters.filter)
     {
     case eNearest:
-        filter = GTEXTURE_NEAREST;
+        filter = GL_NEAREST;
         break;
     case eLinear:
-        filter = GTEXTURE_LINEAR;
+        filter = GL_LINEAR;
         break;
     }
 
-    int format = 0;
-    int type = 0;
+    GLenum format = 0; // to avoid -Wmaybe-uninitialized warning
+    GLenum type = 0; // to avoid -Wmaybe-uninitialized warning
     switch (parameters.format)
     {
     case eRGBA8888:
-        format = GTEXTURE_RGBA;
-        type = GTEXTURE_UNSIGNED_BYTE;
+        format = GL_RGBA;
+        type = GL_UNSIGNED_BYTE;
         break;
     case eRGB888:
-        format = GTEXTURE_RGB;
-        type = GTEXTURE_UNSIGNED_BYTE;
+        format = GL_RGB;
+        type = GL_UNSIGNED_BYTE;
         break;
     case eRGB565:
-        format = GTEXTURE_RGB;
-        type = GTEXTURE_UNSIGNED_SHORT_5_6_5;
+        format = GL_RGB;
+        type = GL_UNSIGNED_SHORT_5_6_5;
         break;
     case eRGBA4444:
-        format = GTEXTURE_RGBA;
-        type = GTEXTURE_UNSIGNED_SHORT_4_4_4_4;
+        format = GL_RGBA;
+        type = GL_UNSIGNED_SHORT_4_4_4_4;
         break;
     case eRGBA5551:
-        format = GTEXTURE_RGBA;
-        type = GTEXTURE_UNSIGNED_SHORT_5_5_5_1;
+        format = GL_RGBA;
+        type = GL_UNSIGNED_SHORT_5_5_5_1;
         break;
     }
 
     if (!sig.empty())
     {
-        g_id gid = gtexture_reuse(format, type, wrap, filter, &sig[0], sig.size());
-        if (gid != 0)
-        {
-            TextureData* internal = (TextureData*)gtexture_getUserData(gid);
-            TextureData* data = new TextureData(*internal);
-            data->gid = gid;
+        std::map<std::vector<char>, TextureData*>::iterator iter = textureCache_.find(sig);
 
-            return data;
+        if (iter != textureCache_.end())
+        {
+            iter->second->refcount++;
+            return iter->second;
         }
     }
 
@@ -129,43 +128,55 @@ TextureData* TextureManager::createTextureFromFile(const char* filename, const T
     if (parameters.grayscale)
         dib.convertGrayscale();
 
+#ifndef PREMULTIPLIED_ALPHA
+#error PREMULTIPLIED_ALPHA is not defined
+#endif
+
 #if PREMULTIPLIED_ALPHA
     dib.premultiplyAlpha();
 #endif
 
-    g_id gid = 0;
+    GLuint gid;
+    glGenTextures(1, &gid);
+    glBindTexture(GL_TEXTURE_2D, gid);
+
     switch (parameters.format)
     {
     case eRGBA8888:
-        gid = gtexture_create(dib.width(), dib.height(), format, type, wrap, filter, dib.data(), &sig[0], sig.size());
+        glTexImage2D(GL_TEXTURE_2D, 0, format, dib.width(), dib.height(), 0, format, type, dib.data());
         break;
     case eRGB888:
     {
         std::vector<unsigned char> data = dib.to888();
-        gid = gtexture_create(dib.width(), dib.height(), format, type, wrap, filter, &data[0], &sig[0], sig.size());
+        glTexImage2D(GL_TEXTURE_2D, 0, format, dib.width(), dib.height(), 0, format, type, &data[0]);
         break;
     }
     case eRGB565:
     {
         std::vector<unsigned short> data = dib.to565();
-        gid = gtexture_create(dib.width(), dib.height(), format, type, wrap, filter, &data[0], &sig[0], sig.size());
+        glTexImage2D(GL_TEXTURE_2D, 0, format, dib.width(), dib.height(), 0, format, type, &data[0]);
         break;
     }
     case eRGBA4444:
     {
         std::vector<unsigned short> data = dib.to4444();
-        gid = gtexture_create(dib.width(), dib.height(), format, type, wrap, filter, &data[0], &sig[0], sig.size());
+        glTexImage2D(GL_TEXTURE_2D, 0, format, dib.width(), dib.height(), 0, format, type, &data[0]);
         break;
     }
     case eRGBA5551:
     {
         std::vector<unsigned short> data = dib.to5551();
-        gid = gtexture_create(dib.width(), dib.height(), format, type, wrap, filter, &data[0], &sig[0], sig.size());
+        glTexImage2D(GL_TEXTURE_2D, 0, format, dib.width(), dib.height(), 0, format, type, &data[0]);
         break;
     }
     }
 
-    TextureData* data = new TextureData;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
+
+    TextureData *data = new TextureData;
 
     data->gid = gid;
     data->parameters = parameters;
@@ -176,14 +187,16 @@ TextureData* TextureManager::createTextureFromFile(const char* filename, const T
     data->baseWidth = dib.baseOriginalWidth();
     data->baseHeight = dib.baseOriginalHeight();
 
-    TextureData* internal = new TextureData(*data);
-    gtexture_setUserData(gid, internal);
+    data->refcount = 1;
+    data->sig = sig;
+    textureCache_[sig] = data;
 
     return data;
 }
 
-TextureData* TextureManager::createTextureFromDib(const Dib& dib, const TextureParameters& parameters)
+TextureData *TextureManager::createTextureFromDib(const Dib &dib, const TextureParameters &parameters)
 {
+#if 0
     int wrap = 0;
     switch (parameters.wrap)
     {
@@ -287,6 +300,8 @@ TextureData* TextureManager::createTextureFromDib(const Dib& dib, const TextureP
     data->baseHeight = dib.baseOriginalHeight();
 
     return data;
+#endif
+    return NULL;
 }
 
 static unsigned int nextpow2(unsigned int v)
@@ -304,6 +319,7 @@ static unsigned int nextpow2(unsigned int v)
 
 TextureData* TextureManager::createRenderTarget(int w, int h, const TextureParameters& parameters)
 {
+#if 0
     int wrap = 0;
     switch (parameters.wrap)
     {
@@ -350,14 +366,17 @@ TextureData* TextureManager::createRenderTarget(int w, int h, const TextureParam
     data->baseHeight = baseHeight;
 
     return data;
+#endif
+    return NULL;
 }
 
-void TextureManager::destroyTexture(TextureData* texture)
+void TextureManager::destroyTexture(TextureData *texture)
 {
-    TextureData* internal = (TextureData*)gtexture_getUserData(texture->gid);
-    if (gtexture_delete(texture->gid))
-        if (internal)
-            delete internal;
-    delete texture;
+    if (--texture->refcount == 0)
+    {
+        textureCache_.erase(texture->sig);
+        glDeleteTextures(1, &texture->gid);
+        delete texture;
+    }
 }
 

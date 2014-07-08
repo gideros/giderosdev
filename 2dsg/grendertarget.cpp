@@ -2,6 +2,7 @@
 #include "application.h"
 #include "sprite.h"
 #include "glcommon.h"
+#include <gtexture.h>
 
 int GRenderTarget::qualcommFix_ = -1;
 
