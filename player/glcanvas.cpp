@@ -37,15 +37,6 @@
 #include <cJSON.h>
 #include <gstdio.h>
 
-static int __mkdir(const char* path)
-{
-#ifdef _WIN32
-	return _mkdir(path);
-#else
-	return mkdir(path, 0755);
-#endif
-}
-
 
 /*
 void PlatformImplementation::openUrl(const char* url)

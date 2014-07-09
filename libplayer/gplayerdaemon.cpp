@@ -8,6 +8,15 @@
 
 #include <microhttpd.h>
 
+static int __mkdir(const char *path)
+{
+#ifdef _WIN32
+    return _mkdir(path);
+#else
+    return mkdir(path, 0755);
+#endif
+}
+
 #define GET 0
 #define POST 1
 
@@ -76,7 +85,7 @@ static int iteratePost(void *cls,
     if (con_info->fp == NULL)
     {
         std::string tmpdir = pystring::os::path::join(con_info->rootdirectory, ".tmp");
-        _mkdir(tmpdir.c_str());
+        __mkdir(tmpdir.c_str());
         std::string filepath = pystring::os::path::join(tmpdir, filename);
         con_info->filepath = strdup(filepath.c_str());
         con_info->fp = fopen(con_info->filepath, "wb");
@@ -342,14 +351,14 @@ int GPlayerDaemon::handlePost(MHD_Connection *connection, const char *url, const
 
     std::string path = rootDirectory_;
     path = pystring::os::path::join(path, paths[1]);
-    _mkdir(path.c_str());
+    __mkdir(path.c_str());
     std::string md5filename = pystring::os::path::join(path, "md5.bin");
     path = pystring::os::path::join(path, "resource");
-    _mkdir(path.c_str());
+    __mkdir(path.c_str());
     for (size_t i = 2; i < paths.size(); ++i)
     {
         path = pystring::os::path::join(path, paths[i]);
-        _mkdir(path.c_str());
+        __mkdir(path.c_str());
     }
     path = pystring::os::path::join(path, basename);
 
